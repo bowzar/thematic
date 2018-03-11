@@ -13,9 +13,9 @@
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password">123456</property>
 
-        <mapping class="com.yulintu.thematic.data.test.UserGroup"/>
-        <mapping class="com.yulintu.thematic.data.test.User"/>
-        <mapping class="com.yulintu.thematic.data.test.Group"/>
+        <mapping class="com.yulintu.thematic.UserGroup"/>
+        <mapping class="com.yulintu.thematic.User"/>
+        <mapping class="com.yulintu.thematic.Group"/>
 
     </session-factory>
 

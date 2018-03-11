@@ -1,0 +1,3 @@
+thematic:
+    datasource:
+        name: hibernate.oracle.cfg.xml

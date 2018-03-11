@@ -53,6 +53,7 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
+            if (cntConnection>0)
             cntConnection--;
         }
 
@@ -95,6 +96,7 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
+            if (cntTransaction>0)
             cntTransaction--;
         }
 
@@ -116,6 +118,7 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
+            if (cntTransaction>0)
             cntTransaction--;
         }
 

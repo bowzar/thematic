@@ -7,6 +7,6 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.yulintu.thematic.example.boot.postgresql"></context:component-scan>
+    <context:component-scan base-package="com.yulintu.thematic.example.employee.postgresql"></context:component-scan>
 
 </beans>

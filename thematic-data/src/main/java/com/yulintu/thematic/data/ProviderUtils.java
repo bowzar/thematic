@@ -14,5 +14,16 @@ public class ProviderUtils {
     public static void setCurrentProvider(Provider provider) {
         tl.set(provider);
     }
+
+    public  static  Provider  initializeCurrentProvider(){
+
+        Provider provider = getCurrentProvider();
+        if (provider == null) {
+            setCurrentProvider(
+                    provider = GlobalApplicationContext.getApplicationContext().getBean(Provider.class));
+        }
+
+        return provider;
+    }
     //endregion
 }

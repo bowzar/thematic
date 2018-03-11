@@ -25,6 +25,7 @@
         <module>thematic-data</module>
         <module>thematic-example</module>
         <module>thematic-example-boot</module>
+        <module>thematic-data-hibernate</module>
     </modules>
 
 
