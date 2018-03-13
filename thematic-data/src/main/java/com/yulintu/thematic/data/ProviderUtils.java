@@ -15,7 +15,7 @@ public class ProviderUtils {
         tl.set(provider);
     }
 
-    public  static  Provider  initializeCurrentProvider(){
+    public static Provider initializeCurrentProvider() {
 
         Provider provider = getCurrentProvider();
         if (provider == null) {
@@ -24,6 +24,10 @@ public class ProviderUtils {
         }
 
         return provider;
+    }
+
+    public static void clearCurrentProvider() {
+        setCurrentProvider(null);
     }
     //endregion
 }

@@ -38,12 +38,25 @@ public class RepositoryFactory {
     //region methods
 
     public static RepositoryFactory get(Provider provider) {
-        if (map.containsKey(provider))
-            return map.get(provider);
+        if (map.containsKey(provider)) {
+            RepositoryFactory factory = map.get(provider);
+            if (factory != null)
+                return factory;
+        }
 
         RepositoryFactory factory = new RepositoryFactory(provider);
         map.put(provider, factory);
         return factory;
+    }
+
+    public static void clear(Provider provider) {
+        if (map.containsKey(provider)) {
+            RepositoryFactory factory = map.get(provider);
+            map.remove(provider);
+
+            if (factory != null)
+                factory.mapInstances.clear();
+        }
     }
 
     public <T extends Repository> T create(Class<? extends T> type) {

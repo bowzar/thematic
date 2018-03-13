@@ -6,5 +6,8 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableAspectJAutoProxy
+@Import({
+        RepositoryAdvicesConnection.class,
+        RepositoryAdvicesTransaction.class})
 public class SpringConfiguration {
 }

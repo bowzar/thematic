@@ -3,13 +3,12 @@ package com.yulintu.thematic.example.boot;
 import com.yulintu.thematic.data.*;
 import com.yulintu.thematic.data.hibernate.HibernateConnectionStringBuilder;
 import com.yulintu.thematic.data.hibernate.ProviderHibernateImpl;
+import com.yulintu.thematic.web.ApiExceptionAdvices;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 @Configuration
-@EnableAspectJAutoProxy
-@Import({ServiceCacheAdvices.class,ServiceConnectionAdvices.class,ServiceTransactionAdvices.class, })
-@ComponentScan({"com.yulintu.thematic.example.employee"})
+@ImportResource(locations = {"classpath:spring.application.xml"})
 public class BeanConfiguration extends SpringConfiguration {
 
     @Value("${thematic.datasource.name}")

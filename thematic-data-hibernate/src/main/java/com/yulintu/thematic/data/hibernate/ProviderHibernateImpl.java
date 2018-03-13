@@ -1,5 +1,6 @@
 package com.yulintu.thematic.data.hibernate;
 
+import com.yulintu.thematic.AssertUtils;
 import com.yulintu.thematic.data.ProviderDbImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,13 @@ public class ProviderHibernateImpl extends ProviderDbImpl implements ProviderHib
     public ProviderHibernateImpl(String connectionString) {
         super(connectionString);
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        currentSession = null;
+        factory = null;
+    }
+
     //endregion
 
     //region methods
@@ -42,30 +50,34 @@ public class ProviderHibernateImpl extends ProviderDbImpl implements ProviderHib
 
     @Override
     protected boolean onBeginTransaction() {
+        AssertUtils.notNull(currentSession, "currentSession");
         currentSession.beginTransaction();
         return true;
     }
 
     @Override
     protected boolean onCommitTransaction() {
+        AssertUtils.notNull(currentSession, "currentSession");
         currentSession.getTransaction().commit();
         return true;
     }
 
     @Override
     protected boolean onRollbackTransaction() {
+        AssertUtils.notNull(currentSession, "currentSession");
         currentSession.getTransaction().rollback();
         return true;
     }
 
     @Override
     public List query(HibernateSessionQuery callback) {
-
+        AssertUtils.notNull(currentSession, "currentSession");
         return callback.query(currentSession);
     }
 
     @Override
     public Object execute(HibernateSessionExecute callback) {
+        AssertUtils.notNull(currentSession, "currentSession");
         return callback.execute(currentSession);
     }
 

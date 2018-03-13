@@ -1,10 +1,13 @@
 package com.yulintu.thematic.example.employee;
 
+import com.yulintu.thematic.data.DbConnection;
+import com.yulintu.thematic.data.DbTransaction;
 import com.yulintu.thematic.data.Provider;
 import com.yulintu.thematic.data.hibernate.RepositoryHibernateImpl;
 
 import java.util.List;
 
+@DbConnection
 public class RepositoryEmployeeImpl extends RepositoryHibernateImpl implements RepositoryEmployee {
 
     public RepositoryEmployeeImpl(Provider provider) {
@@ -17,16 +20,19 @@ public class RepositoryEmployeeImpl extends RepositoryHibernateImpl implements R
     }
 
     @SuppressWarnings("unchecked")
+    @DbTransaction
     @Override
     public List<User> all() {
 
-        Object val = getHibernateProvider()
-                .execute(session -> session
-                        .createQuery("from User")
-                        .list());
+        throw new EmployeeTestException("链接未打开", new Exception("test"));
 
-
-        User user = new User();
-        return (List<User>) val;
+//        Object val = getHibernateProvider()
+//                .execute(session -> session
+//                        .createQuery("from User")
+//                        .list());
+//
+//
+//        User user = new User();
+//        return (List<User>) val;
     }
 }
