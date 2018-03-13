@@ -7,7 +7,7 @@ public class RepositoryImpl implements Repository {
     //region provider
     private Provider provider;
 
-    protected Provider getProvider() {
+    public Provider getProvider() {
         return provider;
     }
     //endregion

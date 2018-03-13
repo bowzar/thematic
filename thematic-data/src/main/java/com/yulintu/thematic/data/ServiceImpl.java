@@ -1,6 +1,6 @@
 package com.yulintu.thematic.data;
 
-import org.springframework.util.Assert;
+import com.yulintu.thematic.AssertUtils;
 
 public class ServiceImpl implements Service {
 
@@ -14,7 +14,7 @@ public class ServiceImpl implements Service {
     protected <T extends Repository> T getRepository(Class<? extends T> type) {
 
         Provider provider = ProviderUtils.getCurrentProvider();
-        Assert.notNull(provider);
+        AssertUtils.notNull(provider, "provider");
 
         return RepositoryFactory.get(provider).create(type, true);
     }
