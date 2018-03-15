@@ -70,6 +70,7 @@ public class ConnectionStringBuilder {
 
     private void reset(String connectionString) {
 
+        this.connectionString = connectionString;
         map = new HashMap<>();
 
         if (StringUtils.isEmpty(connectionString))

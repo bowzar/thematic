@@ -24,15 +24,15 @@ public class RepositoryEmployeeImpl extends RepositoryHibernateImpl implements R
     @Override
     public List<User> all() {
 
-        throw new EmployeeTestException("链接未打开", new Exception("test"));
+//        throw new EmployeeTestException("链接未打开", new Exception("test"));
 
-//        Object val = getHibernateProvider()
-//                .execute(session -> session
-//                        .createQuery("from User")
-//                        .list());
-//
-//
-//        User user = new User();
-//        return (List<User>) val;
+        Object val = getHibernateProvider()
+                .execute(session -> session
+                        .createQuery("from User")
+                        .list());
+
+
+        User user = new User();
+        return (List<User>) val;
     }
 }

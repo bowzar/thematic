@@ -8,5 +8,5 @@ thematic:
 
 logging:
     level:
-        root: ERROR
-        com.yulintu.thematic.data.ServiceAdvicesTracker: WARN
+        root: INFO
+        com.yulintu.thematic.data.ContainerAdvicesTracker: INFO

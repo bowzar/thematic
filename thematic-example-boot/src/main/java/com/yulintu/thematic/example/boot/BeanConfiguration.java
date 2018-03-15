@@ -3,7 +3,6 @@ package com.yulintu.thematic.example.boot;
 import com.yulintu.thematic.data.*;
 import com.yulintu.thematic.data.hibernate.HibernateConnectionStringBuilder;
 import com.yulintu.thematic.data.hibernate.ProviderHibernateImpl;
-import com.yulintu.thematic.web.ApiExceptionAdvices;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
@@ -17,7 +16,6 @@ public class BeanConfiguration extends SpringConfiguration {
     @Bean
     @Scope("prototype")
     public Provider provider() {
-
         HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
         builder.setConfigureFilePath(dsConfigName);
         return new ProviderHibernateImpl(builder.getConnectionString());

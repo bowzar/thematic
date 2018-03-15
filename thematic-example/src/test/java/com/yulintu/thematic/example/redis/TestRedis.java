@@ -28,9 +28,18 @@ public class TestRedis {
     @Test
     public void testKeys() {
         Set<String> keys = jedis.keys("*");
+        keys.stream().forEach(c -> System.out.println(c));
 
         jedis.set("name", "JY");
+        System.out.println(jedis.get("name"));
+    }
+
+    @Test
+    public void testProvider() {
+        Set<String> keys = jedis.keys("*");
         keys.stream().forEach(c -> System.out.println(c));
+
+        jedis.set("name", "JY");
         System.out.println(jedis.get("name"));
     }
 }

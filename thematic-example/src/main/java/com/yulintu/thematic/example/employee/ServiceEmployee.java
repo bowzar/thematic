@@ -9,4 +9,8 @@ public interface ServiceEmployee extends Service {
     String echo(String val);
 
     List<User> all();
+
+    int clear();
+
+    int clearAll();
 }

@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Aspect
-public class ServiceAdvicesTracker {
+public class ContainerAdvicesTracker {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceAdvicesTracker.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContainerAdvicesTracker.class);
 
-    @Around("this(com.yulintu.thematic.data.Service)")
+    @Around("@within(com.yulintu.thematic.data.Trackable)")
     public Object onAround(ProceedingJoinPoint pjp) {
 
         try {
@@ -23,7 +23,6 @@ public class ServiceAdvicesTracker {
             return pjp.proceed(pjp.getArgs());
 
         } catch (Throwable e) {
-            logger.warn("hahahahaha");
             logger.error(buildMessage(pjp, e), e);
             ExceptionUtils.throwRuntimeException(e);
             return null;
