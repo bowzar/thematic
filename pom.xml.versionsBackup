@@ -7,10 +7,11 @@
     <groupId>com.yulintu</groupId>
     <artifactId>thematic</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.5-RELEASE</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
+        <global.version>1.0.0-SNAPSHOT</global.version>
     </properties>
 
     <repositories>
@@ -35,6 +36,8 @@
     <modules>
         <module>thematic-core</module>
         <module>thematic-data</module>
+        <module>thematic-example</module>
+        <module>thematic-example-boot</module>
         <module>thematic-data-hibernate</module>
         <module>thematic-web</module>
         <module>thematic-data-redis</module>
@@ -60,6 +63,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -90,23 +94,5 @@
         </plugins>
     </build>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.5</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependency-updates-report</report>
-                            <report>plugin-updates-report</report>
-                            <report>property-updates-report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 
 </project>
