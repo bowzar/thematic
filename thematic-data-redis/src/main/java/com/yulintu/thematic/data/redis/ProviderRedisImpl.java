@@ -2,7 +2,6 @@ package com.yulintu.thematic.data.redis;
 
 import com.yulintu.thematic.ExceptionUtils;
 import com.yulintu.thematic.data.ProviderDbImpl;
-import org.hibernate.Session;
 import redis.clients.jedis.*;
 
 import java.io.IOException;

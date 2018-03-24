@@ -16,4 +16,4 @@ target
 *.jar
 build
 
-*.versionsBa    ckup
+*.xml.versionsBackup

@@ -1,6 +1,7 @@
 package com.yulintu.thematic.data;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.Assert;
 
 import java.util.Map;
@@ -14,24 +15,20 @@ public class RepositoryFactory {
     private Map<Class<? extends Repository>, Repository> mapInstances = new ConcurrentHashMap<>();
     private Provider provider;
     private ApplicationContext ac;
-    private String configFileTemplate;
     //endregion
 
     //region ctor
     public RepositoryFactory(Provider provider) {
-        this(provider, "classpath:spring.repository.%s.xml");
-    }
-
-    public RepositoryFactory(Provider provider, String configFileTemplate) {
         Assert.notNull(provider);
         Assert.hasLength(provider.getType());
-        Assert.hasLength(configFileTemplate);
 
         this.provider = provider;
-        this.configFileTemplate = configFileTemplate;
 
-        ac = ClassPathXmlApplicationContextPool.initialize(
-                String.format(configFileTemplate, provider.getType()));
+        ac = tryLoad(String.format("file:spring.repository.%s.xml", provider.getType()));
+        if (ac == null)
+            ac = tryLoad(String.format("file:config/spring.repository.%s.xml", provider.getType()));
+        if (ac == null)
+            ac = tryLoad(String.format("classpath:spring.repository.%s.xml", provider.getType()));
     }
     //endregion
 
@@ -74,6 +71,16 @@ public class RepositoryFactory {
             mapInstances.put(type, bean);
 
         return bean;
+    }
+
+    private ApplicationContext tryLoad(String fileName) {
+
+        try {
+            return ClassPathXmlApplicationContextPool.initialize(fileName);
+
+        } catch (Throwable e) {
+            return null;
+        }
     }
     //endregion
 }

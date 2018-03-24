@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.0.5-RELEASE</version>
+        <version>1.0.7-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.0.5-RELEASE</version>
+            <version>1.0.7-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-data</artifactId>
-            <version>1.0.5-RELEASE</version>
+            <version>1.0.7-RELEASE</version>
         </dependency>
 
 

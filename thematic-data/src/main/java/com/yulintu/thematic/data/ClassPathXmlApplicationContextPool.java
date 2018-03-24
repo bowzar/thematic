@@ -28,6 +28,8 @@ public class ClassPathXmlApplicationContextPool {
         if (has(fileName))
             return map.get(fileName);
 
+
+
         ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext(fileName);
         map.put(fileName, ac);
         return ac;
