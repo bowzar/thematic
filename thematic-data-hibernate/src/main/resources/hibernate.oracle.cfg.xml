@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <property name="provider.type">oracle</property>
+
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://192.168.20.3:1433;databaseName=Account</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">123456</property>
+
+        <mapping class="com.yulintu.thematic.example.employee.User"/>
+
+    </session-factory>
+
+
+</hibernate-configuration>

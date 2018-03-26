@@ -34,7 +34,17 @@ public class HibernateSessionFactoryPool {
         String filePath = builder.getConfigureFilePath();
         boolean useFile = !filePath.isEmpty();
 
-        Configuration configure = useFile ? new Configuration().configure(filePath) : new Configuration();
+        Configuration configure = null;
+
+        if (useFile) {
+            configure = tryLoad(String.format("file:%s", filePath));
+            if (configure == null)
+                configure = tryLoad(String.format("file:config/%s", filePath));
+            if (configure == null)
+                configure = tryLoad(filePath);
+        } else {
+            configure = new Configuration();
+        }
 
         if (builder.hasKey("hibernate.show_sql"))
             configure.setProperty("hibernate.show_sql", builder.getShowSql());
@@ -62,6 +72,15 @@ public class HibernateSessionFactoryPool {
     public static String getDriverClass(String connectionString) {
         return has(connectionString) ? mapConfiguration.get(
                 connectionString).getProperty("provider.type") : null;
+    }
+
+    private static Configuration tryLoad(String filePath) {
+        try {
+            return new Configuration().configure(filePath);
+
+        } catch (Throwable e) {
+            return null;
+        }
     }
     //endregion
 }
