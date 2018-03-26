@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.0.8-RELEASE</version>
+        <version>1.0.9-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,43 +16,43 @@
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.0.8-RELEASE</version>
+            <version>1.0.9-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-data</artifactId>
-            <version>1.0.8-RELEASE</version>
+            <version>1.0.9-RELEASE</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>5.0.4.RELEASE</version>
+            <version>4.3.14.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.0.4.RELEASE</version>
+            <version>4.3.14.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>5.0.4.RELEASE</version>
+            <version>4.3.14.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>5.0.4.RELEASE</version>
+            <version>4.3.14.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.0.4.RELEASE</version>
+            <version>4.3.14.RELEASE</version>
         </dependency>
 
         <dependency>
