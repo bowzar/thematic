@@ -63,7 +63,6 @@ public class Geometry {
     //region methods
     //region methods - static
     public static Geometry from(com.esri.core.geometry.Geometry instance) {
-
         Geometry geo = new Geometry();
         geo.instance = instance;
         return geo;
