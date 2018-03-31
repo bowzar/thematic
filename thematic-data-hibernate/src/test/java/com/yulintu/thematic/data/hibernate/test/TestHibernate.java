@@ -10,10 +10,10 @@ public class TestHibernate {
     @Test
     public void testCreation() {
 
-        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
-        builder.setConfigureFilePath("hibernate.oracle.cfg.xml");
-        SessionFactory sessionFactory = HibernateSessionFactoryPool.initialize(builder.getConnectionString());
-
+//        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
+//        builder.setConfigureFilePath("hibernate.oracle.cfg.xml");
+//        SessionFactory sessionFactory = HibernateSessionFactoryPool.initialize(builder.getConnectionString());
+//
 
     }
 }
