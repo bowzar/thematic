@@ -1,13 +1,8 @@
 package com.yulintu.thematic.web;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-
-@Setter
-@Getter
-public class ResponseData {
-    private int status;
-    private String message;
-    private Object data;
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ResponseData {
 }
