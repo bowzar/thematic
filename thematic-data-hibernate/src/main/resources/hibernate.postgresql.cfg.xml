@@ -2,15 +2,16 @@
 <hibernate-configuration>
     <session-factory>
 
+        <property name="provider.type">postgresql</property>
+
+        <!--<property name="hbm2ddl.auto">create</property>-->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
 
-        <property name="provider.type">oracle</property>
-
-        <property name="hibernate.dialect">com.yulintu.thematic.data.hibernate.oracle.OracleSpatialDialect</property>
-        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.20.7:1521:orcle2</property>
-        <property name="hibernate.connection.username">SDE</property>
+        <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.20.10:15432/account</property>
+        <property name="hibernate.connection.username">sde</property>
         <property name="hibernate.connection.password">123456</property>
 
         <mapping class="com.yulintu.thematic.data.hibernate.test.entities.SJZD"/>

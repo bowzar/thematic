@@ -5,25 +5,36 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.1.5.3-RELEASE</version>
+        <version>1.1.5.5-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>thematic-spatial</artifactId>
-
 
     <dependencies>
 
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.1.5.3-RELEASE</version>
+            <version>1.1.5.5-RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>com.esri.geometry</groupId>
             <artifactId>esri-geometry-api</artifactId>
             <version>2.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>sdoapi</artifactId>
+            <version>11.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geolatte</groupId>
+            <artifactId>geolatte-geom</artifactId>
+            <version>1.2.0</version>
         </dependency>
 
     </dependencies>

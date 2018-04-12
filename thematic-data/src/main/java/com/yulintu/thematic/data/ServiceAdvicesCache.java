@@ -17,7 +17,7 @@ public class ServiceAdvicesCache {
 
             //  provider = ProviderUtils.initializeCurrentProvider();
             //  if (provider instanceof ProviderDb) {
-            //     ((ProviderHibernate) provider).openConnection();
+            //     ((ProviderPersistence) provider).openConnection();
             //  }
 
             return pjp.proceed(args);
@@ -28,7 +28,7 @@ public class ServiceAdvicesCache {
 
         } finally {
             //   if (provider instanceof ProviderDb) {
-            //      ((ProviderHibernate) provider).closeConnection();
+            //      ((ProviderPersistence) provider).closeConnection();
             //  }
         }
     }

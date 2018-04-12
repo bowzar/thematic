@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.1.5.3-RELEASE</version>
+        <version>1.1.5.5-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,14 +16,13 @@
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.1.5.3-RELEASE</version>
+            <version>1.1.5.5-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-data</artifactId>
-            <version>1.1.5.3-RELEASE</version>
+            <version>1.1.5.5-RELEASE</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -58,20 +57,81 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.0.12.Final</version>
+            <version>5.2.16.Final</version>
         </dependency>
 
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>6.2.2.jre8</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+            <version>5.2.16.Final</version>
         </dependency>
 
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4.1212.jre7</version>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>4.2.1</version>
         </dependency>
+
 
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-maven-plugin</artifactId>
+                <version>4.2.1</version>
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>test-export</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <configuration>
+                    <jdbcDriver>org.postgresql.Driver</jdbcDriver>
+                    <jdbcUrl>jdbc:postgresql://192.168.20.10:15432/account</jdbcUrl>
+                    <!--<jdbcDriver>oracle.jdbc.driver.OracleDriver</jdbcDriver>-->
+                    <!--<jdbcUrl>jdbc:oracle:thin:@192.168.20.7:1521:orcle2</FjdbcUrl>-->
+                    <jdbcUser>sde</jdbcUser>
+                    <jdbcPassword>123456</jdbcPassword>
+                    <targetFolder>src/test/java</targetFolder>
+                    <packageName>com.yulintu.thematic.data.hibernate.test.oracle.sentities</packageName>
+                    <namePrefix>s</namePrefix>
+                    <spatial>true</spatial>
+
+
+                    <sourceFolder>src</sourceFolder>
+                    <exportBeans>true</exportBeans>
+                    <beanAddToString>true</beanAddToString>
+                    <beanPackageName>com.yulintu.thematic.data.hibernate.test.oracle.entities</beanPackageName>
+                </configuration>
+                <dependencies>
+
+                    <dependency>
+                        <groupId>com.github.noraui</groupId>
+                        <artifactId>ojdbc7</artifactId>
+                        <version>12.1.0.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>com.mysema.maven</groupId>-->
+            <!--<artifactId>apt-maven-plugin</artifactId>-->
+            <!--<version>1.1.3</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<goals>-->
+            <!--<goal>process</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<outputDirectory>target/generated-sources/java</outputDirectory>-->
+            <!--<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+        </plugins>
+    </build>
 </project>

@@ -3,18 +3,19 @@ package com.yulintu.thematic.data.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HibernateSessionFactoryPool {
+public class EntityManagerFactoryPool {
 
     //region fields
-    private static final Map<String, SessionFactory> mapFactory = new ConcurrentHashMap<>();
+    private static final Map<String, EntityManagerFactory> mapFactory = new ConcurrentHashMap<>();
     private static final Map<String, Configuration> mapConfiguration = new ConcurrentHashMap<>();
     //endregion
 
     //region ctor
-    public HibernateSessionFactoryPool() {
+    public EntityManagerFactoryPool() {
 
     }
     //endregion
@@ -24,7 +25,7 @@ public class HibernateSessionFactoryPool {
         return mapFactory.containsKey(connectionString);
     }
 
-    public static SessionFactory initialize(String connectionString) {
+    public static EntityManagerFactory initialize(String connectionString) {
 
         if (has(connectionString))
             return mapFactory.get(connectionString);
