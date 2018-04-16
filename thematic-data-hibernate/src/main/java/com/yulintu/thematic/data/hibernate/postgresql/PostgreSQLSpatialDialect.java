@@ -1,7 +1,7 @@
 package com.yulintu.thematic.data.hibernate.postgresql;
 
 
-public class PostgreSQLSpatialDialect extends org.hibernate.spatial.dialect.postgis.PostgisDialect {
+public class PostgreSQLSpatialDialect extends org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect {
 
     public PostgreSQLSpatialDialect() {
         super();
