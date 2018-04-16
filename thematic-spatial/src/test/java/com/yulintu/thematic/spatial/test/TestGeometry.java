@@ -6,7 +6,7 @@ import com.yulintu.thematic.spatial.GeometryUtils;
 import com.yulintu.thematic.spatial.SpatialReference;
 import org.junit.Test;
 
-public class TestEsriEsriGeometry {
+public class TestGeometry {
 
     @Test
     public void testWkt() {
@@ -20,7 +20,10 @@ public class TestEsriEsriGeometry {
         Geometry geo2 = Geometry.fromWkb(wkb);
         geometry.setSpatialReference(new SpatialReference(3857,null));
 
-        org.geolatte.geom.Geometry geometry1 = GeometryUtils.toLatteGeometry(geometry.getInstance());
         com.esri.core.geometry.Geometry geometry2 = GeometryUtils.toEsriGeometry(geometry.getInstance());
+        org.geolatte.geom.Geometry geometry1 = GeometryUtils.toLatteGeometry(geometry.getInstance());
+
+        String json = GeometryUtils.toGeoJson(geometry2);
+
     }
 }
