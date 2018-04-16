@@ -1,10 +1,11 @@
 package com.yulintu.thematic.spatial;
 
-import com.esri.core.geometry.*;
 import com.google.common.base.Strings;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKBWriter;
+import com.vividsolutions.jts.io.WKTReader;
 import com.yulintu.thematic.AssertUtils;
-
-import java.nio.ByteBuffer;
 
 public class Geometry {
 
@@ -15,8 +16,7 @@ public class Geometry {
 
         if (Strings.isNullOrEmpty(wkt)) {
             AssertUtils.notNull(instance, "instance");
-            wkt = OperatorExportToWkt.local().execute(
-                    WktExportFlags.wktExportDefaults, instance, null);
+            wkt = instance.toText();
         }
 
         return wkt;
@@ -27,29 +27,36 @@ public class Geometry {
         AssertUtils.notNull(wkt, "wkt");
         this.wkt = wkt;
 
-        instance = OperatorImportFromWkt.local().execute(
-                WktImportFlags.wktImportDefaults,
-                com.esri.core.geometry.Geometry.Type.Unknown, wkt, null);
+        try {
+            instance = new WKTReader().read(wkt);
+            instance.setSRID(spatialReference.getWkid());
 
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
     //endregion
 
     //region spatialReference
-    private SpatialReference spatialReference;
+    private SpatialReference spatialReference = new SpatialReference();
 
     public SpatialReference getSpatialReference() {
         return spatialReference;
     }
 
     public void setSpatialReference(SpatialReference spatialReference) {
+        if (spatialReference == null)
+            spatialReference = new SpatialReference();
+
         this.spatialReference = spatialReference;
+        instance.setSRID(spatialReference.getWkid());
     }
     //endregion
 
     //region instance
-    private com.esri.core.geometry.Geometry instance;
+    private com.vividsolutions.jts.geom.Geometry instance;
 
-    public com.esri.core.geometry.Geometry getInstance() {
+    public com.vividsolutions.jts.geom.Geometry getInstance() {
         return instance;
     }
     //endregion
@@ -62,7 +69,7 @@ public class Geometry {
 
     //region methods
     //region methods - static
-    public static Geometry from(com.esri.core.geometry.Geometry instance) {
+    public static Geometry from(com.vividsolutions.jts.geom.Geometry instance) {
         Geometry geo = new Geometry();
         geo.instance = instance;
         return geo;
@@ -77,10 +84,12 @@ public class Geometry {
     public static Geometry fromWkb(byte[] wkb) {
 
         Geometry geometry = new Geometry();
-        geometry.instance = OperatorImportFromWkb.local().execute(
-                WkbImportFlags.wkbImportDefaults,
-                com.esri.core.geometry.Geometry.Type.Unknown,
-                ByteBuffer.wrap(wkb), null);
+        try {
+            geometry.instance = new WKBReader().read(wkb);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         return geometry;
     }
@@ -92,10 +101,7 @@ public class Geometry {
     }
 
     public byte[] asWkb() {
-        ByteBuffer buffer = OperatorExportToWkb.local().execute(
-                WkbExportFlags.wkbExportDefaults, instance, null);
-
-        return buffer.array();
+        return new WKBWriter().write(instance);
     }
     //endregion
 

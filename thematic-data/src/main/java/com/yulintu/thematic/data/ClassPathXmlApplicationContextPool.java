@@ -28,11 +28,33 @@ public class ClassPathXmlApplicationContextPool {
         if (has(fileName))
             return map.get(fileName);
 
-
-
         ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext(fileName);
         map.put(fileName, ac);
         return ac;
+    }
+
+    public static ClassPathXmlApplicationContext findInitialize(String fileName) {
+
+        ClassPathXmlApplicationContext ac = tryInitialize(String.format("file:%s", fileName));
+        if (ac == null)
+            ac = tryInitialize(String.format("file:config/%s", fileName));
+        if (ac == null)
+            ac = tryInitialize(String.format("classpath:%s", fileName));
+
+        if (ac == null)
+            throw new RuntimeException(String.format("未找到名称为 %s 的文件", fileName));
+
+        return ac;
+    }
+
+    private static ClassPathXmlApplicationContext tryInitialize(String fileName) {
+
+        try {
+            return initialize(fileName);
+
+        } catch (Throwable e) {
+            return null;
+        }
     }
     //endregion
 }

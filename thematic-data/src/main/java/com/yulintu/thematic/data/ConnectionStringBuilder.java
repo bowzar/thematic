@@ -79,7 +79,7 @@ public class ConnectionStringBuilder {
         String[] strings = connectionString.split(";");
         Arrays.stream(strings).forEach(c -> {
             String[] opts = c.split("=");
-            map.put(opts[0].trim(), opts[1].trim());
+            map.put(opts[0].trim(), opts.length > 1 ? opts[1].trim() : "");
         });
     }
 

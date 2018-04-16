@@ -1,6 +1,10 @@
 package com.yulintu.thematic.data.hibernate;
 
+import com.google.common.base.Strings;
 import com.yulintu.thematic.data.ConnectionStringBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HibernateConnectionStringBuilder extends ConnectionStringBuilder {
 
@@ -64,23 +68,13 @@ public class HibernateConnectionStringBuilder extends ConnectionStringBuilder {
     }
     //endregion
 
-    //region host
-    public String getHost() {
-        return getString("hibernate.connection.host");
+    //region url
+    public String getUrl() {
+        return getString("hibernate.connection.url");
     }
 
-    public void setHost(String value) {
-        setString("hibernate.connection.host", value);
-    }
-    //endregion
-
-    //region database
-    public String getDatabase() {
-        return getString("hibernate.connection.database");
-    }
-
-    public void setDatabase(String value) {
-        setString("hibernate.connection.database", value);
+    public void setUrl(String value) {
+        setString("hibernate.connection.url", value);
     }
     //endregion
 
@@ -101,6 +95,36 @@ public class HibernateConnectionStringBuilder extends ConnectionStringBuilder {
 
     public void setPassword(String value) {
         setString("hibernate.connection.password", value);
+    }
+    //endregion
+
+    //region password
+    public Class[] getMappingClasses() {
+        String[] classes = getString("mappingClasses").split("#");
+        ArrayList<Class> types = new ArrayList<>();
+
+        Arrays.stream(classes).forEach(c -> {
+            if (Strings.isNullOrEmpty(c))
+                return;
+
+            try {
+                types.add(Class.forName(c));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        return types.toArray(new Class[0]);
+    }
+
+    public void setMappingClasses(Class[] types) {
+
+        StringBuilder builder = new StringBuilder(types[0].getName());
+        for (int i = 1; i < types.length; i++) {
+            builder.append(String.format("#%s", types[i].getName()));
+        }
+
+        setString("mappingClasses", builder.toString());
     }
     //endregion
 }

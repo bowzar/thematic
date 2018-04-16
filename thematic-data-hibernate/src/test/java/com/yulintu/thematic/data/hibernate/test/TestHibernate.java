@@ -3,6 +3,7 @@ package com.yulintu.thematic.data.hibernate.test;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.spatial.PostGISTemplates;
+import com.yulintu.thematic.data.hibernate.EntityManagerFactoryPool;
 import com.yulintu.thematic.data.hibernate.HibernateConnectionStringBuilder;
 import com.yulintu.thematic.data.hibernate.ProviderPersistenceImpl;
 import com.yulintu.thematic.data.hibernate.test.entities.*;
@@ -12,11 +13,28 @@ import com.yulintu.thematic.data.hibernate.test.sentities.QXZQH_XZDY;
 import com.yulintu.thematic.data.hibernate.test.sentities.sMzdw;
 import com.yulintu.thematic.spatial.GeometryUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-
 public class TestHibernate {
+
+    @Test
+    public void testBuilder() {
+        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
+        builder.setDialect("org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect");
+        builder.setDriverClass("org.postgresql.Driver");
+        builder.setUrl("jdbc:postgresql://192.168.20.10:5432/data_burg");
+        builder.setUsername("sde");
+        builder.setPassword("123456");
+        builder.setConfigureFilePath("");
+        builder.setMappingClasses(new Class[]{MZDW.class, SJZD.class});
+
+        String connectionString = builder.getConnectionString();
+        EntityManagerFactory factory = EntityManagerFactoryPool.initialize(connectionString);
+
+    }
 
     @Test
     public void testCreation() {
@@ -31,7 +49,6 @@ public class TestHibernate {
         });
 
     }
-
 
     @Test
     public void testQueryDSL() {
@@ -58,10 +75,10 @@ public class TestHibernate {
             return factory.selectFrom(sMzdw.mzdw).fetchFirst();
         });
 
-        Object o2 = provider2.allInTransaction(new Configuration(PostGISTemplates.builder().build()),(em,jpa,sql) -> {
+        Object o2 = provider2.allInTransaction(new Configuration(PostGISTemplates.builder().build()), (em, jpa, sql) -> {
 
             Mzdw mzdw = new Mzdw();
-            mzdw.setShape(GeometryUtils.toLatteGeometry( o1.getShape()));
+            mzdw.setShape(GeometryUtils.toLatteGeometry(o1.getShape()));
             mzdw.setMj(5.44);
             mzdw.setDwmc("HIDE");
 

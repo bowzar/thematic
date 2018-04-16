@@ -2,9 +2,11 @@ package com.yulintu.thematic.spatial.test;
 
 
 import com.yulintu.thematic.spatial.Geometry;
+import com.yulintu.thematic.spatial.GeometryUtils;
+import com.yulintu.thematic.spatial.SpatialReference;
 import org.junit.Test;
 
-public class TestEsriGeometry {
+public class TestEsriEsriGeometry {
 
     @Test
     public void testWkt() {
@@ -15,7 +17,10 @@ public class TestEsriGeometry {
 
         Geometry geometry = Geometry.fromWkt(wktString);
         byte[] wkb = geometry.asWkb();
-        Geometry geo2 = geometry.fromWkb(wkb);
+        Geometry geo2 = Geometry.fromWkb(wkb);
+        geometry.setSpatialReference(new SpatialReference(3857,null));
 
+        org.geolatte.geom.Geometry geometry1 = GeometryUtils.toLatteGeometry(geometry.getInstance());
+        com.esri.core.geometry.Geometry geometry2 = GeometryUtils.toEsriGeometry(geometry.getInstance());
     }
 }

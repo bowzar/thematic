@@ -31,6 +31,14 @@ public class SpatialReference {
 
     }
 
+    public SpatialReference(int wkid) {
+        this(wkid, null);
+    }
+
+    public SpatialReference(String wkt) {
+        this(0, wkt);
+    }
+
     public SpatialReference(int wkid, String wkt) {
         this.wkid = wkid;
         this.wkt = wkt;

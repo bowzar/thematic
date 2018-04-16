@@ -1,9 +1,11 @@
 package com.yulintu.thematic.data.hibernate;
 
+import com.google.common.base.Strings;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,7 +35,7 @@ public class EntityManagerFactoryPool {
         HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder(connectionString);
 
         String filePath = builder.getConfigureFilePath();
-        boolean useFile = !filePath.isEmpty();
+        boolean useFile = !Strings.isNullOrEmpty(filePath);
 
         Configuration configure = null;
 
@@ -56,12 +58,16 @@ public class EntityManagerFactoryPool {
             configure.setProperty("hibernate.dialect", builder.getDialect());
         if (builder.hasKey("hibernate.connection.driver_class"))
             configure.setProperty("hibernate.connection.driver_class", builder.getDriverClass());
-        if (builder.hasKey("hibernate.connection.host") && builder.hasKey("hibernate.connection.database"))
-            configure.setProperty("hibernate.connection.url", String.format("%s;databaseName=%s", builder.getHost(), builder.getDatabase()));
+        if (builder.hasKey("hibernate.connection.url"))
+            configure.setProperty("hibernate.connection.url", builder.getUrl());
         if (builder.hasKey("hibernate.connection.username"))
             configure.setProperty("hibernate.connection.username", builder.getUsername());
         if (builder.hasKey("hibernate.connection.password"))
             configure.setProperty("hibernate.connection.password", builder.getPassword());
+
+        final Configuration config = configure;
+        if (builder.hasKey("mappingClasses"))
+            Arrays.stream(builder.getMappingClasses()).forEach(c -> config.addAnnotatedClass(c));
 
         SessionFactory factory = configure.buildSessionFactory();
         mapFactory.put(connectionString, factory);
