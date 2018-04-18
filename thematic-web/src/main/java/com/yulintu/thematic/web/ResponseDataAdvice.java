@@ -1,5 +1,7 @@
 package com.yulintu.thematic.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,6 +30,15 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
         data.setData(o);
         data.setStatus(200);
 
-        return data;
+        Class<?> returnType = methodParameter.getMethod().getReturnType();
+        if (returnType != String.class)
+            return data;
+
+        try {
+            return new ObjectMapper().writeValueAsString(data);
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

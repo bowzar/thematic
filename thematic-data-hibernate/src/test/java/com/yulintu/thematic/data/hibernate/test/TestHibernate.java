@@ -1,19 +1,22 @@
 package com.yulintu.thematic.data.hibernate.test;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.spatial.PostGISTemplates;
+import com.yulintu.thematic.data.querydsl.EntityContext;
+import com.yulintu.thematic.data.querydsl.QueryDSLUtils;
 import com.yulintu.thematic.data.hibernate.EntityManagerFactoryPool;
 import com.yulintu.thematic.data.hibernate.HibernateConnectionStringBuilder;
 import com.yulintu.thematic.data.hibernate.ProviderPersistenceImpl;
 import com.yulintu.thematic.data.hibernate.test.entities.*;
-import com.yulintu.thematic.data.hibernate.test.sentities.QMZDW;
 import com.yulintu.thematic.data.hibernate.test.sentities.QSJZD;
 import com.yulintu.thematic.data.hibernate.test.sentities.QXZQH_XZDY;
 import com.yulintu.thematic.data.hibernate.test.sentities.sMzdw;
 import com.yulintu.thematic.spatial.GeometryUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
@@ -103,16 +106,62 @@ public class TestHibernate {
 
 //            return result;
 
+            Mzdw mzdw2 = new Mzdw();
+            mzdw.setShape(o11.getShape());
+            mzdw.setMj(8.88);
+            mzdw.setDwmc("haha");
 
-            jpa
-                    .update(sMzdw.mzdw)
-                    .where(sMzdw.mzdw.dwmc.eq("HIDE"))
-                    .set(sMzdw.mzdw.id, "haha")
-                    .set(sMzdw.mzdw.shape, o11.getShape())
+            QueryDSLUtils.update(
+                    jpa.update(sMzdw.mzdw).
+                            where(sMzdw.mzdw.dwmc.eq("HIDE")),
+                    sMzdw.mzdw, mzdw2)
                     .execute();
 
             return 1;
         });
 
+    }
+
+    @Test
+    public void testQueryDSLUtils() {
+
+        Expression[] expressions = QueryDSLUtils.asExpressionArray(
+                QXZQH_XZDY.xZQH_XZDY.bm,
+                QXZQH_XZDY.xZQH_XZDY.mc,
+                QXZQH_XZDY.xZQH_XZDY.shape);
+
+        Expression[] attributes = QueryDSLUtils.selectAttributes(QXZQH_XZDY.xZQH_XZDY);
+        Expression[] attributes1 = QueryDSLUtils.selectAttributes(sMzdw.mzdw);
+        Expression[] expressions2 = QueryDSLUtils.selectExcept(QXZQH_XZDY.xZQH_XZDY, QXZQH_XZDY.xZQH_XZDY.shape);
+
+        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
+        builder.setConfigureFilePath("hibernate.oracle.cfg.xml");
+        ProviderPersistenceImpl provider1 = new ProviderPersistenceImpl(builder.getConnectionString());
+
+        Expression[] expressions1 = QueryDSLUtils.selectAttributes(QSJZD.sJZD);
+        Object o = provider1.dslInSession(factory -> {
+            return factory
+                    .from(QSJZD.sJZD)
+                    .where(QSJZD.sJZD.bm.contains("3"))
+                    .select(expressions1)
+                    .fetchFirst();
+        });
+
+        SJZD sjzd = QueryDSLUtils.entityFrom((Tuple) o, expressions1, SJZD.class);
+
+        Object o1 = provider1.dslInSession(factory -> {
+            return factory
+                    .from(QSJZD.sJZD)
+                    .where(QSJZD.sJZD.bm.contains("3"))
+                    .select(expressions1)
+                    .fetch();
+        });
+
+        List<SJZD> sjzds = QueryDSLUtils.entitiesFrom((List<Tuple>) o1, expressions1, SJZD.class);
+    }
+
+    @Test
+    public void testScanPackage() {
+        EntityContext.installAll("com.yulintu.thematic.data");
     }
 }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.1.5.18-RELEASE</version>
+        <version>1.1.6.5-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.1.5.18-RELEASE</version>
+            <version>1.1.6.5-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-data</artifactId>
-            <version>1.1.5.18-RELEASE</version>
+            <version>1.1.6.5-RELEASE</version>
         </dependency>
 
         <dependency>
@@ -34,6 +34,11 @@
             <artifactId>hibernate-spatial</artifactId>
             <version>5.2.16.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.9.Final</version>
+        </dependency>
 
     </dependencies>
 
@@ -41,40 +46,40 @@
         <plugins>
 
             <!--<plugin>-->
-                <!--<groupId>com.querydsl</groupId>-->
-                <!--<artifactId>querydsl-maven-plugin</artifactId>-->
-                <!--<version>4.2.1</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>test-export</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<jdbcDriver>org.postgresql.Driver</jdbcDriver>-->
-                    <!--<jdbcUrl>jdbc:postgresql://192.168.20.10:15432/account</jdbcUrl>-->
-                    <!--<jdbcUser>sde</jdbcUser>-->
-                    <!--<jdbcPassword>123456</jdbcPassword>-->
-                    <!--<targetFolder>src/test/java</targetFolder>-->
-                    <!--<packageName>com.yulintu.thematic.data.hibernate.test.oracle.sentities</packageName>-->
-                    <!--<namePrefix>s</namePrefix>-->
-                    <!--<spatial>true</spatial>-->
+            <!--<groupId>com.querydsl</groupId>-->
+            <!--<artifactId>querydsl-maven-plugin</artifactId>-->
+            <!--<version>4.2.1</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<goals>-->
+            <!--<goal>test-export</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--<configuration>-->
+            <!--<jdbcDriver>org.postgresql.Driver</jdbcDriver>-->
+            <!--<jdbcUrl>jdbc:postgresql://192.168.20.10:15432/account</jdbcUrl>-->
+            <!--<jdbcUser>sde</jdbcUser>-->
+            <!--<jdbcPassword>123456</jdbcPassword>-->
+            <!--<targetFolder>src/test/java</targetFolder>-->
+            <!--<packageName>com.yulintu.thematic.data.hibernate.test.oracle.sentities</packageName>-->
+            <!--<namePrefix>s</namePrefix>-->
+            <!--<spatial>true</spatial>-->
 
 
-                    <!--<sourceFolder>src</sourceFolder>-->
-                    <!--<exportBeans>true</exportBeans>-->
-                    <!--<beanAddToString>true</beanAddToString>-->
-                    <!--<beanPackageName>com.yulintu.thematic.data.hibernate.test.oracle.entities</beanPackageName>-->
-                <!--</configuration>-->
-                <!--<dependencies>-->
+            <!--<sourceFolder>src</sourceFolder>-->
+            <!--<exportBeans>true</exportBeans>-->
+            <!--<beanAddToString>true</beanAddToString>-->
+            <!--<beanPackageName>com.yulintu.thematic.data.hibernate.test.oracle.entities</beanPackageName>-->
+            <!--</configuration>-->
+            <!--<dependencies>-->
 
-                    <!--<dependency>-->
-                        <!--<groupId>com.github.noraui</groupId>-->
-                        <!--<artifactId>ojdbc7</artifactId>-->
-                        <!--<version>12.1.0.2</version>-->
-                    <!--</dependency>-->
-                <!--</dependencies>-->
+            <!--<dependency>-->
+            <!--<groupId>com.github.noraui</groupId>-->
+            <!--<artifactId>ojdbc7</artifactId>-->
+            <!--<version>12.1.0.2</version>-->
+            <!--</dependency>-->
+            <!--</dependencies>-->
             <!--</plugin>-->
 
 

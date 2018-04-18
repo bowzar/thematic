@@ -18,12 +18,13 @@ public class TestGeometry {
         Geometry geometry = Geometry.fromWkt(wktString);
         byte[] wkb = geometry.asWkb();
         Geometry geo2 = Geometry.fromWkb(wkb);
-        geometry.setSpatialReference(new SpatialReference(3857,null));
+        geometry.setSpatialReference(new SpatialReference(3857, null));
 
-        com.esri.core.geometry.Geometry geometry2 = GeometryUtils.toEsriGeometry(geometry.getInstance());
+        com.esri.core.geometry.MapGeometry geometry2 = GeometryUtils.toEsriGeometry(geometry.getInstance());
         org.geolatte.geom.Geometry geometry1 = GeometryUtils.toLatteGeometry(geometry.getInstance());
 
-        String json = GeometryUtils.toGeoJson(geometry2);
+        String json = geometry.asGeoJson();
+        Geometry geometry3 = geometry.fromGeoJson(json);
 
     }
 }

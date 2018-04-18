@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MethodHelper {
+public class MethodUtils {
 
     public static Method[] getMethods(Class<?> type, boolean searchSuper, boolean ignoreAccess) {
 

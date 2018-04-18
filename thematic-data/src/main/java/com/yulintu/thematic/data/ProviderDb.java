@@ -7,9 +7,13 @@ public interface ProviderDb extends Provider {
 
     boolean closeConnection();
 
+    boolean isConnectionOpened();
+
     boolean beginTransaction();
 
     boolean commitTransaction();
 
     boolean rollbackTransaction();
+
+    boolean isTransactionBegun();
 }

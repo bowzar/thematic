@@ -1,5 +1,6 @@
 package com.yulintu.thematic.test;
 
+import com.yulintu.thematic.ClassUtils;
 import com.yulintu.thematic.JavaTypeConverter;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -31,5 +32,16 @@ public class TypeTest {
         System.out.println(converter.to(UUID.class, UUID.randomUUID().toString()));
         System.out.println(converter.to(DateTime.class, "2015-11-15T12:0:0.43"));
         System.out.println(converter.to(DateTime.class, "2015-11-15"));
+    }
+
+    @Test
+    public void testScanPackage() {
+//        ClassUtils.scanClassByPackage("com.yulintu.thematic", c -> {
+//
+//            Class type = (Class) c;
+//            System.out.println(type.getName());
+//
+//            return true;
+//        });
     }
 }

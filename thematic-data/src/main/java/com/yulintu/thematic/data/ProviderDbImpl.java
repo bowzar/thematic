@@ -53,15 +53,21 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
-            if (cntConnection>0)
-            cntConnection--;
+            if (cntConnection > 0)
+                cntConnection--;
         }
 
         return false;
     }
 
+
     protected boolean onCloseConnection() {
         return false;
+    }
+
+    @Override
+    public boolean isConnectionOpened() {
+        return cntConnection > 0;
     }
 
     @Override
@@ -96,8 +102,8 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
-            if (cntTransaction>0)
-            cntTransaction--;
+            if (cntTransaction > 0)
+                cntTransaction--;
         }
 
         return false;
@@ -118,8 +124,8 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
                 return val;
             }
 
-            if (cntTransaction>0)
-            cntTransaction--;
+            if (cntTransaction > 0)
+                cntTransaction--;
         }
 
         return false;
@@ -128,5 +134,11 @@ public class ProviderDbImpl extends ProviderImpl implements ProviderDb {
     protected boolean onRollbackTransaction() {
         return false;
     }
+
+    @Override
+    public boolean isTransactionBegun() {
+        return cntTransaction > 0;
+    }
+
     //endregion
 }

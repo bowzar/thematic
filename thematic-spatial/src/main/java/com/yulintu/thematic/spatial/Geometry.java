@@ -1,5 +1,6 @@
 package com.yulintu.thematic.spatial;
 
+import com.esri.core.geometry.MapGeometry;
 import com.google.common.base.Strings;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
@@ -72,6 +73,7 @@ public class Geometry {
     public static Geometry from(com.vividsolutions.jts.geom.Geometry instance) {
         Geometry geo = new Geometry();
         geo.instance = instance;
+        geo.spatialReference = new SpatialReference(instance.getSRID());
         return geo;
     }
 
@@ -93,6 +95,10 @@ public class Geometry {
 
         return geometry;
     }
+
+    public static Geometry fromGeoJson(String json) {
+        return GeometryUtils.fromGeoJson(json);
+    }
     //endregion
 
     //region public
@@ -102,6 +108,10 @@ public class Geometry {
 
     public byte[] asWkb() {
         return new WKBWriter().write(instance);
+    }
+
+    public String asGeoJson() {
+        return GeometryUtils.toGeoJson(GeometryUtils.toEsriGeometry(instance));
     }
     //endregion
 

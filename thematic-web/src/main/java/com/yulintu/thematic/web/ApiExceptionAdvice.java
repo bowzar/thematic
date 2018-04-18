@@ -1,6 +1,7 @@
 package com.yulintu.thematic.web;
 
-import com.yulintu.thematic.AnnotationHelper;
+import com.google.common.base.Strings;
+import com.yulintu.thematic.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +20,16 @@ public class ApiExceptionAdvice {
         ResponseBodyData error = new ResponseBodyData();
         int status = 500;
 
+        String exceptionMessage = exception.getMessage();
+
         if (exception instanceof ApiException) {
             ApiException apiException = (ApiException) exception;
             status = apiException.getStatus();
-            error.setMessage(exception.getMessage());
+            error.setMessage(exceptionMessage);
 
         } else {
 
-            ResponseStatus annotation = AnnotationHelper.
+            ResponseStatus annotation = AnnotationUtils.
                     getClassAnnotationByType(exception.getClass(), ResponseStatus.class);
 
             if (annotation == null)
@@ -35,8 +38,12 @@ public class ApiExceptionAdvice {
             if (annotation != null)
                 status = annotation.value().value();
 
-            String msg = annotation != null ? msg = annotation.reason() : "发生了一个异常";
-            error.setMessage(String.format("%s, %s", msg, exception.getMessage()));
+            String msg = annotation != null ? msg = annotation.reason() : "";
+
+            error.setMessage(
+                    Strings.isNullOrEmpty(msg) ?
+                            exceptionMessage :
+                            String.format("%s, %s", msg, exceptionMessage));
         }
 
         error.setStatus(status);
