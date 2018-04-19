@@ -13,11 +13,6 @@
         <property name="hibernate.connection.username">SDE</property>
         <property name="hibernate.connection.password">123456</property>
 
-        <mapping class="com.yulintu.thematic.data.hibernate.test.entities.SJZD"/>
-        <mapping class="com.yulintu.thematic.data.hibernate.test.entities.XZQH_XZDY"/>
-        <mapping class="com.yulintu.thematic.data.hibernate.test.entities.Mzdw"/>
-        <mapping class="com.yulintu.thematic.data.hibernate.test.entities.MZDW"/>
-
     </session-factory>
 
 

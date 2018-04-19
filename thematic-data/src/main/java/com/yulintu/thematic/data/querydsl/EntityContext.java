@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.reflections.Reflections;
 
+import javax.persistence.Entity;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
@@ -18,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EntityContext {
 
     //region fields
-    private static final ConcurrentHashMap<Class<? extends BeanPath>, EntityContext> mapAll = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<? extends BeanPath>, EntityContext> mapPath = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class, EntityContext> mapEntity = new ConcurrentHashMap<>();
 
     private HashMap<String, Expression> map = new HashMap<>();
     private HashMap<String, Field> mapFields = null;
@@ -26,11 +29,14 @@ public class EntityContext {
     @Getter
     @Setter
     private Class typeEntity;
+
+    @Getter
+    @Setter
+    private Class<? extends BeanPath> typePath;
     //endregion
 
     //region ctor
-    private EntityContext(Class<? extends BeanPath> target) {
-        install(target);
+    private EntityContext() {
     }
     //endregion
 
@@ -47,28 +53,26 @@ public class EntityContext {
                 if (name.startsWith(c))
                     EntityContext.from(type);
             });
+
+            Set<Class<?>> entityTypes = reflections.getTypesAnnotatedWith(Entity.class);
+            entityTypes.forEach(type -> {
+
+                String name = type.getPackage().getName();
+                if (!name.startsWith(c))
+                    return;
+
+                if (mapEntity.containsKey(type))
+                    return;
+
+                mapEntity.put(type, null);
+            });
         });
     }
 
     public static EntityContext from(Class<? extends BeanPath> target) {
 
-        if (mapAll.containsKey(target))
-            return mapAll.get(target);
-
-        EntityContext context = new EntityContext(target);
-        mapAll.put(target, context);
-        return context;
-    }
-
-    public Expression getExpression(String name) {
-        return map.containsKey(name) ? map.get(name) : null;
-    }
-
-    public Field getField(String name) {
-        return mapFields.containsKey(name) ? mapFields.get(name) : null;
-    }
-
-    private void install(Class<? extends BeanPath> target) {
+        if (mapPath.containsKey(target))
+            return mapPath.get(target);
 
         Field primaryField = ClassUtils.getFirstField(target, c -> {
 
@@ -90,6 +94,7 @@ public class EntityContext {
         }
 
         BeanPath finalPath = path;
+        EntityContext context = new EntityContext();
         ClassUtils.scanFields(target, c -> {
 
             if (Modifier.isStatic(c.getModifiers()))
@@ -100,7 +105,7 @@ public class EntityContext {
                 return true;
 
             try {
-                map.put(c.getName(), (Expression) c.get(finalPath));
+                context.map.put(c.getName(), (Expression) c.get(finalPath));
                 return true;
 
             } catch (IllegalAccessException e) {
@@ -109,12 +114,37 @@ public class EntityContext {
         });
 
         ParameterizedType type = (ParameterizedType) target.getGenericSuperclass();
-        typeEntity = (Class) type.getActualTypeArguments()[0];
+        context.typeEntity = (Class) type.getActualTypeArguments()[0];
 
-        if (typeEntity == null)
+        if (context.typeEntity == null)
             throw new RuntimeException(String.format("无效的 QueryDSL 实体 %s", target.getName()));
 
-        mapFields = ClassUtils.instanceFieldsToHashMap(typeEntity);
+        context.mapFields = ClassUtils.instanceFieldsToHashMap(context.typeEntity);
+
+        mapPath.put(target, context);
+        mapEntity.put(context.typeEntity, context);
+
+        return context;
     }
+
+    public static Class[] getAllEntities() {
+
+        ArrayList<Class> list = new ArrayList<>();
+
+        mapEntity.forEach((type, context) -> {
+            list.add(type);
+        });
+
+        return list.toArray(new Class[0]);
+    }
+
+    public Expression getExpression(String name) {
+        return map.containsKey(name) ? map.get(name) : null;
+    }
+
+    public Field getField(String name) {
+        return mapFields.containsKey(name) ? mapFields.get(name) : null;
+    }
+
     //endregion
 }

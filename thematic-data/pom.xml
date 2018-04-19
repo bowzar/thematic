@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thematic</artifactId>
         <groupId>com.yulintu</groupId>
-        <version>1.1.6.5-RELEASE</version>
+        <version>1.1.6.7-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,18 +17,18 @@
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-core</artifactId>
-            <version>1.1.6.5-RELEASE</version>
+            <version>1.1.6.7-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.yulintu</groupId>
             <artifactId>thematic-spatial</artifactId>
-            <version>1.1.6.5-RELEASE</version>
+            <version>1.1.6.7-RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.0.6.RELEASE</version>
+            <version>${spring.data.version}</version>
             <!--<exclusions>-->
                 <!--<exclusion>-->
                     <!--<groupId>com.querydsl</groupId>-->
@@ -40,13 +40,13 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>6.2.2.jre8</version>
+            <version>${sqlserver.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4.1212.jre7</version>
+            <version>${postgresql.version}</version>
         </dependency>
 
         <!--<dependency>-->
@@ -59,37 +59,37 @@
         <dependency>
             <groupId>com.github.noraui</groupId>
             <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
+            <version>${oracle.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.2.16.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-spatial</artifactId>
-            <version>4.1.4</version>
+            <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-sql-spatial</artifactId>
-            <version>4.1.4</version>
+            <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <version>4.1.4</version>
+            <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-sql-spring</artifactId>
-            <version>4.1.4</version>
+            <version>${querydsl.version}</version>
         </dependency>
 
     </dependencies>

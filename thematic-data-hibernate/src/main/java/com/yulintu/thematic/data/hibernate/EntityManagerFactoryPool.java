@@ -1,13 +1,16 @@
 package com.yulintu.thematic.data.hibernate;
 
 import com.google.common.base.Strings;
+import com.yulintu.thematic.data.querydsl.EntityContext;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class EntityManagerFactoryPool {
 
@@ -66,8 +69,11 @@ public class EntityManagerFactoryPool {
             configure.setProperty("hibernate.connection.password", builder.getPassword());
 
         final Configuration config = configure;
-        if (builder.hasKey("mappingClasses"))
-            Arrays.stream(builder.getMappingClasses()).forEach(c -> config.addAnnotatedClass(c));
+
+        HashSet<Class> set = new HashSet<>();
+        set.addAll(Arrays.stream(builder.getMappingClasses()).collect(Collectors.toList()));
+        set.addAll(Arrays.stream(EntityContext.getAllEntities()).collect(Collectors.toList()));
+        set.forEach(c -> config.addAnnotatedClass(c));
 
         SessionFactory factory = configure.buildSessionFactory();
         mapFactory.put(connectionString, factory);

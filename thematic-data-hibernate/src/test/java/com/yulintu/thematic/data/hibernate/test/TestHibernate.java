@@ -16,12 +16,19 @@ import com.yulintu.thematic.data.hibernate.test.sentities.QSJZD;
 import com.yulintu.thematic.data.hibernate.test.sentities.QXZQH_XZDY;
 import com.yulintu.thematic.data.hibernate.test.sentities.sMzdw;
 import com.yulintu.thematic.spatial.GeometryUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 public class TestHibernate {
+
+    @Before
+    public void before() {
+
+        EntityContext.installAll("com.yulintu.thematic.data");
+    }
 
     @Test
     public void testBuilder() {
