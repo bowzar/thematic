@@ -62,6 +62,9 @@ public class ClassUtils {
     //region fields
     public static Object getValueFrom(Object target, Field field) {
         try {
+            if (!field.isAccessible())
+                field.setAccessible(true);
+            
             return field.get(target);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

@@ -100,6 +100,10 @@ public class HibernateConnectionStringBuilder extends ConnectionStringBuilder {
 
     //region password
     public Class[] getMappingClasses() {
+
+        if (!hasKey("mappingClasses"))
+            return new Class[0];
+
         String[] classes = getString("mappingClasses").split("#");
         ArrayList<Class> types = new ArrayList<>();
 

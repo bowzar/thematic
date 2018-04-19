@@ -1,6 +1,7 @@
 package com.yulintu.thematic.data.querydsl;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
@@ -24,7 +25,7 @@ public class QueryDSLUtils {
         return items;
     }
 
-    public static Expression[] select(BeanPath target, Class template) {
+    public static Expression[] select(EntityPath target, Class template) {
 
         HashMap<String, Field> map = ArrayUtils.toHashMap(
                 c -> c.getName(),
@@ -54,7 +55,7 @@ public class QueryDSLUtils {
         return list.toArray(new Expression[0]);
     }
 
-    public static Expression[] selectAttributes(BeanPath target) {
+    public static Expression[] selectAttributes(EntityPath target) {
 
         ArrayList<Expression> list = new ArrayList<>();
 
@@ -83,7 +84,7 @@ public class QueryDSLUtils {
         return list.toArray(new Expression[0]);
     }
 
-    public static Expression[] selectExcept(BeanPath target, Expression... excludes) {
+    public static Expression[] selectExcept(EntityPath target, Expression... excludes) {
 
         ArrayList<Expression> list = new ArrayList<>();
         HashSet<Expression> expressions = ArrayUtils.toHashSet(excludes);
@@ -112,8 +113,13 @@ public class QueryDSLUtils {
 
         return list.toArray(new Expression[0]);
     }
-    //endregion
 
+    public static Expression getId(EntityPath target) {
+
+        EntityContext context = EntityContext.from(target.getClass());
+        return context.getIdExpression();
+    }
+    //endregion
 
     //region methods - fetch
     public static <T> T entityFrom(Tuple tuple, Expression[] expressions, Class<T> target) {
@@ -177,7 +183,7 @@ public class QueryDSLUtils {
 
     //region methods - update
 
-    public static JPAUpdateClause update(JPAUpdateClause update, BeanPath target, Object value) {
+    public static JPAUpdateClause update(JPAUpdateClause update, EntityPath target, Object value) {
 
         AssertUtils.notNull(value, "value");
 

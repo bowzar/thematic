@@ -1,38 +1,39 @@
 package com.yulintu.thematic.data.querydsl;
 
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.BeanPath;
 import com.yulintu.thematic.ClassUtils;
 import lombok.Getter;
-import lombok.Setter;
 import org.reflections.Reflections;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityContext {
 
     //region fields
-    private static final ConcurrentHashMap<Class<? extends BeanPath>, EntityContext> mapPath = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<? extends EntityPath>, EntityContext> mapPath = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class, EntityContext> mapEntity = new ConcurrentHashMap<>();
 
-    private HashMap<String, Expression> map = new HashMap<>();
+    private HashMap<String, Expression> mapExpressions = new HashMap<>();
     private HashMap<String, Field> mapFields = null;
 
     @Getter
-    @Setter
     private Class typeEntity;
 
     @Getter
-    @Setter
-    private Class<? extends BeanPath> typePath;
+    private Class<? extends EntityPath> typePath;
+
+    @Getter
+    private EntityPath entityPath;
+
+    @Getter
+    private String idName;
     //endregion
 
     //region ctor
@@ -46,7 +47,7 @@ public class EntityContext {
         Arrays.stream(basePackages).forEach(c -> {
 
             Reflections reflections = new Reflections(c);
-            Set<Class<? extends BeanPath>> types = reflections.getSubTypesOf(BeanPath.class);
+            Set<Class<? extends EntityPath>> types = reflections.getSubTypesOf(EntityPath.class);
             types.forEach(type -> {
 
                 String name = type.getPackage().getName();
@@ -69,7 +70,7 @@ public class EntityContext {
         });
     }
 
-    public static EntityContext from(Class<? extends BeanPath> target) {
+    public static EntityContext from(Class<? extends EntityPath> target) {
 
         if (mapPath.containsKey(target))
             return mapPath.get(target);
@@ -86,15 +87,16 @@ public class EntityContext {
         if (primaryField == null)
             throw new RuntimeException(String.format("无效的 QueryDSL 实体 %s", target.getName()));
 
-        BeanPath path = null;
+        EntityPath path = null;
         try {
-            path = (BeanPath) primaryField.get(null);
+            path = (EntityPath) primaryField.get(null);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
-        BeanPath finalPath = path;
         EntityContext context = new EntityContext();
+        context.entityPath = path;
+
         ClassUtils.scanFields(target, c -> {
 
             if (Modifier.isStatic(c.getModifiers()))
@@ -105,7 +107,7 @@ public class EntityContext {
                 return true;
 
             try {
-                context.map.put(c.getName(), (Expression) c.get(finalPath));
+                context.mapExpressions.put(c.getName(), (Expression) c.get(context.entityPath));
                 return true;
 
             } catch (IllegalAccessException e) {
@@ -121,10 +123,23 @@ public class EntityContext {
 
         context.mapFields = ClassUtils.instanceFieldsToHashMap(context.typeEntity);
 
+        Optional<Field> first = context.mapFields.values().stream()
+                .filter(c -> c.getDeclaredAnnotation(Id.class) != null).findFirst();
+
+        first.ifPresent(field -> context.idName = field.getName());
+
         mapPath.put(target, context);
         mapEntity.put(context.typeEntity, context);
 
         return context;
+    }
+
+    public static EntityContext getByPathType(Class type) {
+        return mapPath.getOrDefault(type, null);
+    }
+
+    public static EntityContext getByEntityType(Class type) {
+        return mapEntity.getOrDefault(type, null);
     }
 
     public static Class[] getAllEntities() {
@@ -139,11 +154,19 @@ public class EntityContext {
     }
 
     public Expression getExpression(String name) {
-        return map.containsKey(name) ? map.get(name) : null;
+        return mapExpressions.containsKey(name) ? mapExpressions.get(name) : null;
     }
 
     public Field getField(String name) {
-        return mapFields.containsKey(name) ? mapFields.get(name) : null;
+        return mapFields.getOrDefault(name, null);
+    }
+
+    public Expression getIdExpression() {
+        return mapExpressions.getOrDefault(idName, null);
+    }
+
+    public Field getIdField() {
+        return mapFields.getOrDefault(idName, null);
     }
 
     //endregion
