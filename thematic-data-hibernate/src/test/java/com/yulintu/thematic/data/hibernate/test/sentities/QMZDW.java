@@ -1,23 +1,16 @@
 package com.yulintu.thematic.data.hibernate.test.sentities;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
-
-import com.querydsl.core.types.dsl.*;
-
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
+import com.yulintu.thematic.data.hibernate.test.entities.MZDW;
 
 import javax.annotation.Generated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-import com.querydsl.core.types.Path;
-import com.vividsolutions.jts.geom.Geometry;
-import com.yulintu.thematic.data.hibernate.test.entities.MZDW;
-import com.yulintu.thematic.data.hibernate.test.entities.Mzdw;
-import lombok.Getter;
-import lombok.Setter;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 /**
