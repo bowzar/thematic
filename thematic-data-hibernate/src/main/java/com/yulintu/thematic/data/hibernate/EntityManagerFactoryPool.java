@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 import com.yulintu.thematic.data.querydsl.EntityContext;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class EntityManagerFactoryPool {
 
     //region fields
+    private static final Logger logger = LoggerFactory.getLogger(EntityManagerFactoryPool.class);
     private static final Map<String, EntityManagerFactory> mapFactory = new ConcurrentHashMap<>();
     private static final Map<String, Configuration> mapConfiguration = new ConcurrentHashMap<>();
     //endregion
@@ -73,7 +76,10 @@ public class EntityManagerFactoryPool {
         HashSet<Class> set = new HashSet<>();
         set.addAll(Arrays.stream(builder.getMappingClasses()).collect(Collectors.toList()));
         set.addAll(Arrays.stream(EntityContext.getAllEntities()).collect(Collectors.toList()));
-        set.forEach(c -> config.addAnnotatedClass(c));
+        set.forEach(c -> {
+            logger.info(c.getName());
+            config.addAnnotatedClass(c);
+        });
 
         SessionFactory factory = configure.buildSessionFactory();
         mapFactory.put(connectionString, factory);
