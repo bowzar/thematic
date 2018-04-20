@@ -7,7 +7,7 @@
     <groupId>com.yulintu</groupId>
     <artifactId>thematic</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.6.16-RELEASE</version>
+    <version>1.1.6.19-RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -22,6 +22,8 @@
         <versions.maven.plugin.version>2.5</versions.maven.plugin.version>
         <tomcat.embed.core.version>8.5.28</tomcat.embed.core.version>
         <jackson.version>2.9.5</jackson.version>
+        <fastjson.version>1.2.47</fastjson.version>
+        <slf4j.version>1.7.25</slf4j.version>
 
         <hibernate.version>5.2.16.Final</hibernate.version>
         <hibernate.validator.version>6.0.9.Final</hibernate.validator.version>
@@ -30,6 +32,9 @@
         <oracle.version>12.1.0.2</oracle.version>
         <postgresql.version>9.4.1212.jre7</postgresql.version>
         <sqlserver.version>6.2.2.jre8</sqlserver.version>
+        <javax.validation.version>2.0.1.Final</javax.validation.version>
+
+        <kafka.version>1.1.0</kafka.version>
 
         <sdoapi.version>11.2.1</sdoapi.version>
         <geolatte.version>1.2.0</geolatte.version>
@@ -65,6 +70,7 @@
         <module>thematic-web</module>
         <module>thematic-data-redis</module>
         <module>thematic-spatial</module>
+        <module>thematic-data-kafka</module>
     </modules>
 
     <dependencies>
@@ -91,6 +97,18 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <dependency>
@@ -110,6 +128,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
