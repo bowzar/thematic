@@ -35,8 +35,10 @@ public class EntityManagerFactoryPool {
 
     public static EntityManagerFactory initialize(String connectionString) {
 
-        if (has(connectionString))
+        if (has(connectionString)) {
+            logger.info("已经存在使用连接字符串创建的 EntityManagerFactory. {}", connectionString);
             return mapFactory.get(connectionString);
+        }
 
         HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder(connectionString);
 
@@ -73,6 +75,9 @@ public class EntityManagerFactoryPool {
 
         final Configuration config = configure;
 
+
+        logger.info("开始初始化实体映射信息...");
+
         HashSet<Class> set = new HashSet<>();
         set.addAll(Arrays.stream(builder.getMappingClasses()).collect(Collectors.toList()));
         set.addAll(Arrays.stream(EntityContext.getAllEntities()).collect(Collectors.toList()));
@@ -80,6 +85,8 @@ public class EntityManagerFactoryPool {
             logger.info(c.getName());
             config.addAnnotatedClass(c);
         });
+
+        logger.info("共获取到 {} 个实体映射信息...", set.size());
 
         SessionFactory factory = configure.buildSessionFactory();
         mapFactory.put(connectionString, factory);
