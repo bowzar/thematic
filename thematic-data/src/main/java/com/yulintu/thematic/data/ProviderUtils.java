@@ -1,9 +1,17 @@
 package com.yulintu.thematic.data;
 
+import com.google.common.base.Strings;
+import lombok.Getter;
+import lombok.Setter;
+
 public class ProviderUtils {
 
     //region fields
     private static final ThreadLocal<Provider> tl = new ThreadLocal<>();
+
+    @Getter
+    @Setter
+    private  static  String providerName = null;
     //endregion
 
     //region methods
@@ -20,7 +28,9 @@ public class ProviderUtils {
         Provider provider = getCurrentProvider();
         if (provider == null) {
             setCurrentProvider(
-                    provider = GlobalApplicationContext.getApplicationContext().getBean(Provider.class));
+                    provider = Strings.isNullOrEmpty( providerName)?
+                            GlobalApplicationContext.getApplicationContext().getBean(Provider.class):
+                            GlobalApplicationContext.getApplicationContext().getBean(providerName, Provider.class));
         }
 
         return provider;
