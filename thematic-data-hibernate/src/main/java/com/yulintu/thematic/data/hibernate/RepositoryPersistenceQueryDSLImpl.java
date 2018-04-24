@@ -324,24 +324,27 @@ public class RepositoryPersistenceQueryDSLImpl extends RepositoryPersistenceImpl
     @Override
     public <T> int update(T value) {
 
-        EntityContext context = EntityContext.getByEntityType(value.getClass());
+        getEntityManager().merge(value);
+        return 1;
 
-        EntityPath path = context.getEntityPath();
-        Field idField = context.getIdField();
-        Expression idExpression = context.getIdExpression();
-        AssertUtils.notNull(idField, "idField");
-
-        Object id = ClassUtils.getValueFrom(value, idField);
-
-        return (int) QueryDSLUtils.update(
-                getJPAQueryFactory()
-                        .update(path)
-                        .where(Expressions.predicate(
-                                Ops.EQ,
-                                idExpression,
-                                Expressions.constant(id))),
-                path,
-                value).execute();
+//        EntityContext context = EntityContext.getByEntityType(value.getClass());
+//
+//        EntityPath path = context.getEntityPath();
+//        Field idField = context.getIdField();
+//        Expression idExpression = context.getIdExpression();
+//        AssertUtils.notNull(idField, "idField");
+//
+//        Object id = ClassUtils.getValueFrom(value, idField);
+//
+//        return (int) QueryDSLUtils.update(
+//                getJPAQueryFactory()
+//                        .update(path)
+//                        .where(Expressions.predicate(
+//                                Ops.EQ,
+//                                idExpression,
+//                                Expressions.constant(id))),
+//                path,
+//                value).execute();
     }
 
     @Override
@@ -383,22 +386,26 @@ public class RepositoryPersistenceQueryDSLImpl extends RepositoryPersistenceImpl
     @Override
     public <T> int delete(T value) {
 
-        EntityContext context = EntityContext.getByEntityType(value.getClass());
-
-        EntityPath path = context.getEntityPath();
-        Field idField = context.getIdField();
-        Expression idExpression = context.getIdExpression();
-        AssertUtils.notNull(idField, "idField");
-
-        Object id = ClassUtils.getValueFrom(value, idField);
-
-        return (int) getJPAQueryFactory()
-                .delete(path)
-                .where(Expressions.predicate(
-                        Ops.EQ,
-                        idExpression,
-                        Expressions.constant(id)))
-                .execute();
+        getEntityManager().remove(value);
+        return 1;
+//
+//
+//        EntityContext context = EntityContext.getByEntityType(value.getClass());
+//
+//        EntityPath path = context.getEntityPath();
+//        Field idField = context.getIdField();
+//        Expression idExpression = context.getIdExpression();
+//        AssertUtils.notNull(idField, "idField");
+//
+//        Object id = ClassUtils.getValueFrom(value, idField);
+//
+//        return (int) getJPAQueryFactory()
+//                .delete(path)
+//                .where(Expressions.predicate(
+//                        Ops.EQ,
+//                        idExpression,
+//                        Expressions.constant(id)))
+//                .execute();
     }
 
     @Override
