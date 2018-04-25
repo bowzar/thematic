@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <property name="provider.type">postgresql</property>
+
+
+        <!--<property name="hbm2ddl.auto">create</property>-->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.jdbc.batch_size">1000</property>
+        <property name="hibernate.jdbc.lob.non_contextual_creation">true</property>
+
+
+        <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.20.10:5433/tworegion_3857_dev</property>
+        <property name="hibernate.connection.username">sde</property>
+        <property name="hibernate.connection.password">123456</property>
+
+
+        <!--Hibernate Search ElaticSearch 全文查找配置-->
+        <property name="hibernate.search.default.indexmanager">elasticsearch</property>
+        <property name="hibernate.search.default.elasticsearch.host">http://192.168.20.10:9200</property>
+
+
+    </session-factory>
+
+
+</hibernate-configuration>
