@@ -1,14 +1,19 @@
 package com.yulintu.thematic.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClassPathXmlApplicationContextPool {
 
     //region fields
+    private static final Logger logger = LoggerFactory.getLogger(ClassPathXmlApplicationContextPool.class);
     private static final Map<String, ClassPathXmlApplicationContext> map = new ConcurrentHashMap<>();
     //endregion
 
@@ -53,6 +58,13 @@ public class ClassPathXmlApplicationContextPool {
             return initialize(fileName);
 
         } catch (Throwable e) {
+            if (BeanDefinitionStoreException.class.isAssignableFrom(e.getClass()))
+                e = e.getCause();
+
+            if (FileNotFoundException.class.isAssignableFrom(e.getClass()))
+                return null;
+
+            logger.error(String.format("加载 Spring 配置文件的过程中发生了异常：%s", e), e);
             return null;
         }
     }

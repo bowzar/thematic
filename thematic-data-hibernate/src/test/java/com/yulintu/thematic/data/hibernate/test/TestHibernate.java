@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.spatial.PostGISTemplates;
+import com.yulintu.thematic.data.ClassPathXmlApplicationContextPool;
 import com.yulintu.thematic.data.querydsl.EntityContext;
 import com.yulintu.thematic.data.querydsl.QueryDSLUtils;
 import com.yulintu.thematic.data.hibernate.EntityManagerFactoryPool;
@@ -18,8 +19,11 @@ import com.yulintu.thematic.data.hibernate.test.sentities.sMzdw;
 import com.yulintu.thematic.spatial.GeometryUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.util.List;
 
 public class TestHibernate {
@@ -44,6 +48,33 @@ public class TestHibernate {
         String connectionString = builder.getConnectionString();
         EntityManagerFactory factory = EntityManagerFactoryPool.initialize(connectionString);
 
+    }
+
+    @Test
+    public void testBuildFromSpring() {
+        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
+        builder.setConfigureFilePath("spring.application.xml");
+        builder.setConfigureFileType("spring");
+
+        EntityManagerFactory factory = EntityManagerFactoryPool.initialize(builder.getConnectionString());
+        EntityManagerFactory factory2 = EntityManagerFactoryPool.initialize(builder.getConnectionString());
+
+        ProviderPersistenceImpl provider = new ProviderPersistenceImpl(builder.getConnectionString());
+    }
+
+    @Test
+    public void testBuildFromDataSource() {
+
+        HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
+        builder.setDialect("org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect");
+
+        ApplicationContext ac = ClassPathXmlApplicationContextPool.findInitialize("spring.application.xml");
+        DataSource dataSource = ac.getBean(DataSource.class);
+
+        EntityManagerFactory factory = EntityManagerFactoryPool.initialize(builder.getConnectionString(), dataSource);
+        EntityManagerFactory factory2 = EntityManagerFactoryPool.initialize(builder.getConnectionString(), dataSource);
+
+        ProviderPersistenceImpl provider = new ProviderPersistenceImpl(builder.getConnectionString(), dataSource);
     }
 
     @Test

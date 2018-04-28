@@ -27,6 +27,15 @@ public class HibernateConnectionStringBuilder extends ConnectionStringBuilder {
     }
     //endregion
 
+    //region configureFilePath
+    public String getConfigureFileType() {
+        return getString("type", "string");
+    }
+
+    public void setConfigureFileType(String value) {
+        setString("type", value);
+    }
+    //endregion
 
     //region show_sql
     public String getShowSql() {

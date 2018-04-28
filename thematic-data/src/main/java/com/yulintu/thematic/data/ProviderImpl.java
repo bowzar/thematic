@@ -1,5 +1,7 @@
 package com.yulintu.thematic.data;
 
+import com.google.common.base.Strings;
+
 import java.util.UUID;
 
 public class ProviderImpl implements Provider {
@@ -17,6 +19,10 @@ public class ProviderImpl implements Provider {
 
     public String getConnectionString() {
         return connectionString;
+    }
+
+    protected void setConnectionString(String connectionString) {
+        this.connectionString = connectionString;
     }
     //endregion
 
@@ -36,7 +42,9 @@ public class ProviderImpl implements Provider {
     public ProviderImpl(String connectionString) {
         this.id = UUID.randomUUID();
         this.connectionString = connectionString;
-        initialize(this.connectionString);
+
+        if (!Strings.isNullOrEmpty(this.connectionString))
+            initialize(this.connectionString);
     }
     //endregion
 

@@ -6,18 +6,16 @@ import com.querydsl.sql.SQLQueryFactory;
 import com.yulintu.thematic.AssertUtils;
 import com.yulintu.thematic.data.ProviderDbImpl;
 import org.hibernate.Session;
-import org.hibernate.jdbc.Work;
 
-import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderPersistence {
 
     //region fields
+    private DataSource dataSource = null;
     private EntityManagerFactory factory;
     private EntityManager entityManager;
     //endregion
@@ -27,8 +25,17 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
         super(connectionString);
     }
 
+    public ProviderPersistenceImpl(String connectionString, DataSource dataSource) {
+        super(null);
+        setConnectionString(connectionString);
+        this.dataSource = dataSource;
+
+        initialize(connectionString);
+    }
+
     @Override
-    protected void finalize() throws Throwable {
+    protected void finalize() {
+        dataSource = null;
         entityManager = null;
         factory = null;
     }
@@ -38,8 +45,15 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
     //region methods
     @Override
     protected void initialize(String connectionString) {
-        factory = EntityManagerFactoryPool.initialize(connectionString);
-        setType(EntityManagerFactoryPool.getDriverClass(connectionString));
+
+        if (dataSource == null) {
+            factory = EntityManagerFactoryPool.initialize(connectionString);
+            setType(EntityManagerFactoryPool.getProviderType(connectionString));
+
+        } else {
+            factory = EntityManagerFactoryPool.initialize(connectionString, dataSource);
+            setType(EntityManagerFactoryPool.getProviderType(dataSource));
+        }
     }
 
     @Override
@@ -99,7 +113,7 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
 
         final Connection[] cnn = {null};
         getCurrentSession().doWork(connection -> cnn[0] = connection);
-        return new SQLQueryFactory(config,()-> cnn[0]);
+        return new SQLQueryFactory(config, () -> cnn[0]);
     }
 
     @Override
@@ -182,7 +196,7 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
             final Connection[] cnn = {null};
             em.unwrap(Session.class).doWork(connection -> cnn[0] = connection);
 
-            return callback.execute(new SQLQueryFactory(config,()-> cnn[0]));
+            return callback.execute(new SQLQueryFactory(config, () -> cnn[0]));
 
         } finally {
             em.close();
@@ -200,7 +214,7 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
 
             final Connection[] cnn = {null};
             em.unwrap(Session.class).doWork(connection -> cnn[0] = connection);
-            Object val = callback.execute(new SQLQueryFactory(config,()-> cnn[0]));
+            Object val = callback.execute(new SQLQueryFactory(config, () -> cnn[0]));
 
             em.getTransaction().commit();
 
@@ -225,8 +239,8 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
             final Connection[] cnn = {null};
             em.unwrap(Session.class).doWork(connection -> cnn[0] = connection);
 
-            return callback.execute(em,new JPAQueryFactory(em),
-                    config==null? null: new SQLQueryFactory(config,()-> cnn[0]));
+            return callback.execute(em, new JPAQueryFactory(em),
+                    config == null ? null : new SQLQueryFactory(config, () -> cnn[0]));
 
         } finally {
             em.close();
@@ -244,8 +258,8 @@ public class ProviderPersistenceImpl extends ProviderDbImpl implements ProviderP
 
             final Connection[] cnn = {null};
             em.unwrap(Session.class).doWork(connection -> cnn[0] = connection);
-            Object val = callback.execute(em,new JPAQueryFactory(em),
-                    config==null? null: new SQLQueryFactory(config,()-> cnn[0]));
+            Object val = callback.execute(em, new JPAQueryFactory(em),
+                    config == null ? null : new SQLQueryFactory(config, () -> cnn[0]));
 
             em.getTransaction().commit();
 

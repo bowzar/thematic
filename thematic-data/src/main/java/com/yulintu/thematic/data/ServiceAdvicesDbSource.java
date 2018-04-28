@@ -16,9 +16,9 @@ public class ServiceAdvicesDbSource {
         try {
 
             provider = ProviderUtils.initializeCurrentProvider();
-//          if (provider instanceof ProviderDb) {
-//              ((ProviderDb) provider).openConnection();
-//          }
+            if (provider instanceof ProviderDb) {
+                ((ProviderDb) provider).openConnection();
+            }
 
             return pjp.proceed(args);
 
@@ -30,10 +30,10 @@ public class ServiceAdvicesDbSource {
 
             ExceptionUtils.throwRuntimeException(e);
             return null;
-        } /*finally {
+        } finally {
             if (provider instanceof ProviderDb) {
                 ((ProviderDb) provider).closeConnection();
             }
-        }*/
+        }
     }
 }
