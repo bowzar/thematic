@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@192.168.20.7:1521:orcle2"/>
+        <property name="username" value="SDE"/>
+        <property name="password" value="123456"/>
+
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.yulintu.thematic.data.hibernate.test"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="provider.type">oracle</prop>
+                <prop key="hibernate.dialect">com.yulintu.thematic.data.hibernate.oracle.OracleSpatialDialect</prop>
+
+                <!--<property name="hbm2ddl.auto">create</property>-->
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.jdbc.batch_size">1000</prop>
+                <prop key="hibernate.jdbc.lob.non_contextual_creation">true</prop>
+
+                <!--<prop key="hibernate.search.default.indexmanager">elasticsearch</prop>-->
+                <!--<prop key="hibernate.search.default.elasticsearch.host">http://192.168.20.10:9200</prop>-->
+            </props>
+        </property>
+
+    </bean>
+</beans>

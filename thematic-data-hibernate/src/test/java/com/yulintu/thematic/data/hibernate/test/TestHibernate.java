@@ -2,25 +2,27 @@ package com.yulintu.thematic.data.hibernate.test;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.spatial.PostGISTemplates;
 import com.yulintu.thematic.data.ClassPathXmlApplicationContextPool;
-import com.yulintu.thematic.data.querydsl.EntityContext;
-import com.yulintu.thematic.data.querydsl.QueryDSLUtils;
 import com.yulintu.thematic.data.hibernate.EntityManagerFactoryPool;
 import com.yulintu.thematic.data.hibernate.HibernateConnectionStringBuilder;
 import com.yulintu.thematic.data.hibernate.ProviderPersistenceImpl;
-import com.yulintu.thematic.data.hibernate.test.entities.*;
+import com.yulintu.thematic.data.hibernate.test.entities.MZDW;
+import com.yulintu.thematic.data.hibernate.test.entities.Mzdw;
+import com.yulintu.thematic.data.hibernate.test.entities.SJZD;
+import com.yulintu.thematic.data.hibernate.test.entities.XZQH_XZDY;
+import com.yulintu.thematic.data.hibernate.test.sentities.QMZDW;
 import com.yulintu.thematic.data.hibernate.test.sentities.QSJZD;
 import com.yulintu.thematic.data.hibernate.test.sentities.QXZQH_XZDY;
 import com.yulintu.thematic.data.hibernate.test.sentities.sMzdw;
+import com.yulintu.thematic.data.querydsl.EntityContext;
+import com.yulintu.thematic.data.querydsl.QueryDSLUtils;
 import com.yulintu.thematic.spatial.GeometryUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -95,9 +97,11 @@ public class TestHibernate {
     public void testQueryDSL() {
 
         HibernateConnectionStringBuilder builder = new HibernateConnectionStringBuilder();
-        builder.setConfigureFilePath("hibernate.oracle.cfg.xml");
+        builder.setConfigureFilePath("spring.datasource.oracle.xml");
+        builder.setConfigureFileType("spring");
         ProviderPersistenceImpl provider1 = new ProviderPersistenceImpl(builder.getConnectionString());
         builder.setConfigureFilePath("hibernate.postgresql.cfg.xml");
+        builder.setConfigureFileType("");
         ProviderPersistenceImpl provider2 = new ProviderPersistenceImpl(builder.getConnectionString());
 
         Object o = provider1.dslInSession(factory -> {
@@ -114,6 +118,22 @@ public class TestHibernate {
 
         Mzdw o11 = (Mzdw) provider2.dslInSession(factory -> {
             return factory.selectFrom(sMzdw.mzdw).fetchFirst();
+        });
+
+        Object o12 = provider1.allInTransaction(null,(em,jpa,sql)->{
+
+            MZDW mzdw = new MZDW();
+            mzdw.setShape(o1.getShape());
+            mzdw.setMj(5.44);
+            mzdw.setMc("HIDE");
+
+            em.persist(mzdw);
+
+            em.flush();
+            em.clear();
+
+
+            return  jpa.delete(QMZDW.mZDW).where(QMZDW.mZDW.mc.eq("HIDE")).execute();
         });
 
         Object o2 = provider2.allInTransaction(new Configuration(PostGISTemplates.builder().build()), (em, jpa, sql) -> {
