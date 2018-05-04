@@ -4,10 +4,16 @@ import com.yulintu.thematic.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.Ordered;
 
 @Aspect
 public class ServiceAdvicesDbSource {
 
+    //region fields
+//    public static final int ORDER = -3000000;
+    //endregion
+
+    //region methods
     @Around("this(com.yulintu.thematic.data.Service)")
     public Object onAround(ProceedingJoinPoint pjp) {
 
@@ -36,4 +42,10 @@ public class ServiceAdvicesDbSource {
             }
         }
     }
+
+//    @Override
+//    public int getOrder() {
+//        return ORDER;
+//    }
+    //endregion
 }

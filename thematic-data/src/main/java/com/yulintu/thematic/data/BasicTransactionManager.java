@@ -5,10 +5,10 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 
-public class DbTransactionManager implements PlatformTransactionManager {
+public class BasicTransactionManager implements PlatformTransactionManager {
 
     //region ctor
-    public DbTransactionManager() {
+    public BasicTransactionManager() {
     }
     //endregion
 
@@ -17,7 +17,7 @@ public class DbTransactionManager implements PlatformTransactionManager {
     public TransactionStatus getTransaction(TransactionDefinition transactionDefinition) throws TransactionException {
 
         ProviderDb provider = (ProviderDb) ProviderUtils.initializeCurrentProvider();
-        return new DbTransactionStatus(provider);
+        return new BasicTransactionStatus(provider);
     }
 
     @Override

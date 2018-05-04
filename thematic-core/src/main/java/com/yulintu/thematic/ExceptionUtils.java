@@ -8,4 +8,12 @@ public class ExceptionUtils {
         else
             throw new RuntimeException(e);
     }
+
+    public static RuntimeException createRuntimeException(Throwable e) {
+
+        if (RuntimeException.class.isAssignableFrom(e.getClass()))
+            return (RuntimeException) e;
+
+        return new RuntimeException(e);
+    }
 }

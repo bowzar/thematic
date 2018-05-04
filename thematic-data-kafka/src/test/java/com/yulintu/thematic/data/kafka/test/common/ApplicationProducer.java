@@ -6,5 +6,6 @@ public class ApplicationProducer {
 
         KafkaProducer producerThread = new KafkaProducer(KafkaProperties.topic);
         producerThread.start();
+
     }
 }

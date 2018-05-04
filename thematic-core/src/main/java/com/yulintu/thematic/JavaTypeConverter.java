@@ -25,25 +25,31 @@ public class JavaTypeConverter extends TypeConverter {
     @TypeConverterHandler(byte.class)
     @TypeConverterHandler(Byte.class)
     public Byte toByte(Object value) {
-        return Byte.valueOf(value.toString());
+        String s = value.toString();
+        int i = s.indexOf(".");
+        return Byte.valueOf(i >= 0 ? s.substring(0, i) : s);
     }
 
     @TypeConverterHandler(short.class)
     @TypeConverterHandler(Short.class)
     public Short toInt16(Object value) {
-        return Short.valueOf(value.toString());
+        String s = value.toString();
+        int i = s.indexOf(".");
+        return Short.valueOf(i >= 0 ? s.substring(0, i) : s);
     }
 
     @TypeConverterHandler(int.class)
     @TypeConverterHandler(Integer.class)
     public Integer toInt32(Object value) {
-        return Integer.valueOf(value.toString());
+        String s = value.toString();
+        int i = s.indexOf(".");
+        return Integer.valueOf(i >= 0 ? s.substring(0, i) : s);
     }
 
     @TypeConverterHandler(long.class)
     @TypeConverterHandler(Long.class)
     public Long toInt64(Object value) {
-        return Long.valueOf(value.toString());
+        return value instanceof Number ? Long.valueOf(String.format("%d", value)) : Long.valueOf(value.toString());
     }
 
     @TypeConverterHandler(float.class)
@@ -55,6 +61,7 @@ public class JavaTypeConverter extends TypeConverter {
     @TypeConverterHandler(double.class)
     @TypeConverterHandler(Double.class)
     public Double toDouble(Object value) {
+
         return Double.valueOf(value.toString());
     }
 

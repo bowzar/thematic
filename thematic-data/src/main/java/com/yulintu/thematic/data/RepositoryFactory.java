@@ -1,5 +1,7 @@
 package com.yulintu.thematic.data;
 
+import com.google.common.base.Strings;
+import com.yulintu.thematic.AssertUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.Assert;
@@ -19,8 +21,8 @@ public class RepositoryFactory {
 
     //region ctor
     public RepositoryFactory(Provider provider) {
-        Assert.notNull(provider);
-        Assert.hasLength(provider.getType());
+        AssertUtils.notNull(provider, "provider");
+        AssertUtils.ifTrue(Strings.isNullOrEmpty(provider.getType()), "必须指定 ProviderType");
 
         this.provider = provider;
 

@@ -2,7 +2,7 @@ package com.yulintu.thematic.data;
 
 import org.springframework.transaction.TransactionException;
 
-public class DbTransactionStatus implements org.springframework.transaction.TransactionStatus {
+public class BasicTransactionStatus implements org.springframework.transaction.TransactionStatus {
 
     //region fields
     private ProviderDb provider;
@@ -10,7 +10,7 @@ public class DbTransactionStatus implements org.springframework.transaction.Tran
     //endregion
 
     //region ctor
-    public DbTransactionStatus(ProviderDb provider) {
+    public BasicTransactionStatus(ProviderDb provider) {
         this.provider = provider;
         provider.openConnection();
         isTransactionNew = provider.beginTransaction();

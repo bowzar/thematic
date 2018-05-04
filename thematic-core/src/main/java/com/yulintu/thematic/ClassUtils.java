@@ -1,6 +1,8 @@
 package com.yulintu.thematic;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +51,7 @@ public class ClassUtils {
     //endregion
 
 
+    //region methods - class
     public static <T> T newInstance(Class<T> type) {
         try {
             return type.newInstance();
@@ -59,12 +62,44 @@ public class ClassUtils {
         }
     }
 
+    public static Class getClass(String name) {
+
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> Constructor<T> getConstructor(Class<T> type, Class... args) {
+
+        try {
+            return type.getConstructor(args);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T newInstance(Constructor<T> constructor, Object... args) {
+
+        try {
+            return constructor.newInstance(args);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //endregion
+
     //region fields
     public static Object getValueFrom(Object target, Field field) {
         try {
             if (!field.isAccessible())
                 field.setAccessible(true);
-            
+
             return field.get(target);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -87,6 +122,27 @@ public class ClassUtils {
 
     public static boolean isStatic(Field field) {
         return Modifier.isStatic(field.getModifiers());
+    }
+
+    public static Field getField(Class target, String name) {
+
+        try {
+            return target.getField(name);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getFieldValue(Object target, String name) {
+
+        try {
+            return target.getClass().getField(name).get(target);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static Field getFirstField(Class target, Predicate<Field> predicate) {
