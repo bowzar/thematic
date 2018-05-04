@@ -1,6 +1,5 @@
 package com.yulintu.thematic.data.sharding;
 
-import com.yulintu.thematic.data.BasicTransactionStatus;
 import com.yulintu.thematic.data.ProviderDb;
 import com.yulintu.thematic.data.ProviderUtils;
 import org.springframework.transaction.PlatformTransactionManager;
