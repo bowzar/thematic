@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import({
         ServiceAdvicesDbSourceSharding.class,
         ShardReducerFirst.class,
-        ShardReducerFirstNotNull.class,
         ShardReducerCombine.class,
         ShardReducerSum.class,
         ShardReducerMax.class,

@@ -14,6 +14,7 @@ public class ShardMethodInvokeMetadata {
     private ProceedingJoinPoint joinPoint;
     private boolean transactional;
     private String shardType;
+    private boolean orignalInvoke;
     private ShardReduceType reduceType;
     private Class<ShardReducer> reducer;
     private HashMap<String, Object> args = new HashMap<>();

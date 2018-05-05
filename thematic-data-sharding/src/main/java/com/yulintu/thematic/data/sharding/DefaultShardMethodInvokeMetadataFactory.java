@@ -43,18 +43,20 @@ public class DefaultShardMethodInvokeMetadataFactory implements ShardMethodInvok
 
         Shardable shardable = method.getDeclaredAnnotation(Shardable.class);
         if (shardable == null)
-            throw new DataException(String.format("方法 %s 未配置任何分库/分片规则", method.getName()));
+            metadata.setOrignalInvoke(true);
 
         ShardConfig targetShardable = targetClass.getAnnotation(ShardConfig.class);
-        String type = shardable.value();
+        String type = shardable == null ? "" : shardable.value();
         if (Strings.isNullOrEmpty(type) && targetShardable != null)
             type = targetShardable.value();
 
-        metadata.setReduceType(shardable.reduceType());
-        metadata.setReducer(shardable.reducer());
+        metadata.setReduceType(shardable == null ? ShardReduceType.CUSTOM : shardable.reduceType());
+        metadata.setReducer(shardable == null ? null : shardable.reducer());
         metadata.setShardType(type);
 
-        if (metadata.getReduceType() == ShardReduceType.CUSTOM && metadata.getReducer() == ShardReducer.class)
+        if (shardable != null &&
+                metadata.getReduceType() == ShardReduceType.CUSTOM &&
+                metadata.getReducer() == ShardReducer.class)
             throw new DataException(String.format("方法 %s 的分片归约类型为 Custom , 但未指定分片归约器", method.getName()));
 
         HashMap<Pair<String, Integer>, String[]> indexes = new HashMap<>();

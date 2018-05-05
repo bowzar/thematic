@@ -14,4 +14,5 @@ public interface ServiceSJZD extends Service {
     int count(String code);
 
     List<SJZD> get(String code);
+    int count();
 }

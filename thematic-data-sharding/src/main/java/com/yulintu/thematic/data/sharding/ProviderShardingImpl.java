@@ -24,6 +24,7 @@ public class ProviderShardingImpl extends ProviderDbImpl implements ProviderShar
     @Setter
     private ShardingBean shardingBean;
 
+    @Getter
     private List<ProviderDb> currentShards;
 
     private ConcurrentHashMap<String, List<Pair<ShardElement, ProviderDb>>> mapKey = new ConcurrentHashMap<>();
@@ -177,19 +178,17 @@ public class ProviderShardingImpl extends ProviderDbImpl implements ProviderShar
         return list.stream().map(Pair::getValue).collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<ProviderDb> setCurrentQueryShards(String name, Predicate<ShardElement> predicate) {
-//        List<ProviderDb> list = getShardsInner(name, predicate);
-//        currentShards = Arrays.asList(list.get((int) (Math.random() * list.size())));
-//        return currentShards;
-//    }
-//
-//    @Override
-//    public List<ProviderDb> setCurrentEditShards(String name, Predicate<ShardElement> predicate) {
-//        List<ProviderDb> list = getShardsInner(name, predicate);
-//        currentShards = list;
-//        return list;
-//    }
+    @Override
+    public List<ProviderDb> setCurrentQueryShards(String name, Predicate<ShardElement> predicate) {
+        currentShards = getQueryShards(name, predicate);
+        return currentShards;
+    }
+
+    @Override
+    public List<ProviderDb> setCurrentEditShards(String name, Predicate<ShardElement> predicate) {
+        currentShards = getEditShards(name, predicate);
+        return currentShards;
+    }
 
     private List<Pair<ShardElement, ProviderDb>> getShardsInner(String name, Predicate<ShardElement> predicate) {
 

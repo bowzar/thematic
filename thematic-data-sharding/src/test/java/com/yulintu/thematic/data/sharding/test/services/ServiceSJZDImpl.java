@@ -37,4 +37,10 @@ public class ServiceSJZDImpl extends ServiceImpl implements ServiceSJZD {
     public List<SJZD> get(String code) {
         return repository().get(code);
     }
+
+    @Override
+    @Transactional
+    public int count() {
+        return repository().count();
+    }
 }

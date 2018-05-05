@@ -1,5 +1,7 @@
 package com.yulintu.thematic;
 
+import com.google.common.base.Strings;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +54,24 @@ public class ClassUtils {
 
 
     //region methods - class
+
+    public static boolean isTrue(Object value) {
+        if (value == null)
+            return false;
+
+        Class<?> type = value.getClass();
+        if (value instanceof Number)
+            return JavaTypeConverter.getInstance().toDouble(value) != 0;
+
+        if (value instanceof Boolean)
+            return ((Boolean) value);
+
+        if (value instanceof String)
+            return !Strings.isNullOrEmpty((String) value);
+
+        return true;
+    }
+
     public static <T> T newInstance(Class<T> type) {
         try {
             return type.newInstance();
@@ -94,7 +114,7 @@ public class ClassUtils {
     }
     //endregion
 
-    //region fields
+    //region methods - fields
     public static Object getValueFrom(Object target, Field field) {
         try {
             if (!field.isAccessible())

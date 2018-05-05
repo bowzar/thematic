@@ -35,7 +35,7 @@ public class RepositoryAdvicesSharding implements Ordered {
         return ORDER;
     }
 
-    @Around("@annotation(com.yulintu.thematic.data.sharding.Shardable)")
+    @Around("@within(com.yulintu.thematic.data.sharding.ShardConfig)")
     public Object onAround(ProceedingJoinPoint pjp) {
 
         ProviderSharding provider = null;
@@ -72,14 +72,26 @@ public class RepositoryAdvicesSharding implements Ordered {
 
             List<ProviderDb> shards = null;
             if (metadata.isTransactional()) {
-                shards = provider.getEditShards(
+                shards = provider.setCurrentEditShards(
                         metadata.getKey(), c -> isValid(routers, metadata, c));
             } else
-                shards = provider.getQueryShards(
+                shards = provider.setCurrentQueryShards(
                         metadata.getKey(), c -> isValid(routers, metadata, c));
 
             if (shards.size() == 0)
                 throw new DataException("未名中任何分片规则");
+
+            if (metadata.isOrignalInvoke()) {
+
+                shards.parallelStream().forEach(c -> {
+                    if (!c.isConnectionOpened())
+                        c.openConnection();
+                    if (metadata.isTransactional() && !c.isTransactionBegun())
+                        c.beginTransaction();
+                });
+
+                return pjp.proceed(pjp.getArgs());
+            }
 
             ShardMethodInvokeResult[] result = invokeShards(pjp, metadata, shards);
             return reduceResult(metadata, result);
@@ -158,9 +170,6 @@ public class RepositoryAdvicesSharding implements Ordered {
                 break;
             case COMBINE:
                 reducer = ac.getBean(ShardReducerCombine.class);
-                break;
-            case FIRSTNOTNULL:
-                reducer = ac.getBean(ShardReducerFirstNotNull.class);
                 break;
             case FIRST:
                 reducer = ac.getBean(ShardReducerFirst.class);

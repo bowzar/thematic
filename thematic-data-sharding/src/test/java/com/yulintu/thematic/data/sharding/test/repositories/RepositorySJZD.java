@@ -14,4 +14,6 @@ public interface RepositorySJZD extends Repository {
     int count(String code);
 
     List<SJZD> get(String code);
+
+    int count();
 }

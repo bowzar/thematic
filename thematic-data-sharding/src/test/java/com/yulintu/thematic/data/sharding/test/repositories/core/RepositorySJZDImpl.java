@@ -47,4 +47,9 @@ public class RepositorySJZDImpl extends RepositoryPersistenceQueryDSLImpl implem
     public List<SJZD> get(@ShardKey String code) {
         return super.list(QSJZD.sJZD, QSJZD.sJZD.bm.eq(code));
     }
+
+    @Override
+    public int count() {
+        return count(QSJZD.sJZD);
+    }
 }

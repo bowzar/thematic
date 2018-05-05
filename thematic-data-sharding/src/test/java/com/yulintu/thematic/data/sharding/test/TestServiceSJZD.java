@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -43,6 +42,7 @@ public class TestServiceSJZD {
 
         List<SJZD> s5 = serviceSJZD.get("51");
         List<SJZD> s6 = serviceSJZD.get("510281");
+        int s7 = serviceSJZD.count();
 //            }
 //        });
 
